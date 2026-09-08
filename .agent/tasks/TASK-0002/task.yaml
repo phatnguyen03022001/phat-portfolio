@@ -1,0 +1,208 @@
+protocol_version: 3
+
+task_id: TASK-0002
+task_revision: 1
+state: APPROVED
+
+origin:
+  type: user_request
+  task_id: ""
+  gap_id: PORTFOLIO-V1-EDITORIAL-PERSISTENCE
+
+architect_binding:
+  target_repository: phatnguyen03022001/phat-portfolio
+
+target:
+  repository: phatnguyen03022001/phat-portfolio
+  branch:
+    name: dev
+    role: primary-development
+
+execution_base:
+  mode: handoff_snapshot
+  capture: after_final_planning_commit
+  require_exact_match: true
+
+skill_library:
+  repository: phatnguyen03022001/agent-skills
+  revision: "3c4a31598da4c4e12cb0925bee1b471f160d3b4e"
+
+architect_analysis_skills:
+  - architect
+  - simplicity
+
+execution_skills:
+  required:
+    - executor
+    - verification
+    - github-workflow
+  recommended:
+    - simplicity
+
+external_skills:
+  architect_analysis: []
+  execution_required: []
+  execution_recommended: []
+
+authority_sources:
+  - source: "phatnguyen03022001/phat-portfolio@4e20e44fd3a4cb9ff2345452ecbc846250a9e46e:docs/superpowers/specs/2026-09-08-personal-engineering-portfolio-design.md"
+    role: "Approved portfolio product and architecture authority, including MongoDB persistence, editorial ownership, publication semantics, server-first rendering, and staged-scope boundaries."
+    precedence: 1
+  - source: "phatnguyen03022001/phat-portfolio@4e20e44fd3a4cb9ff2345452ecbc846250a9e46e:docs/superpowers/plans/2026-09-08-editorial-persistence.md"
+    role: "Approved implementation decomposition for the Mongo-backed editorial persistence and public-read slice."
+    precedence: 2
+  - source: "phatnguyen03022001/phat-portfolio@03ca70a27f0ff0d8496149bde552120497716748:.agent/tasks/TASK-0001/review.yaml"
+    role: "Accepted public-foundation baseline that this task extends without changing its visual/product boundaries."
+    precedence: 3
+  - source: "phatnguyen03022001/architect-profile@1a711360afc201f286aeb66c093add98ae16f9ad:ARCHITECT_PROFILE.md"
+    role: "Operator priorities and working preferences only; target product authority remains in phat-portfolio."
+    precedence: 4
+
+structure_authority:
+  status: RESOLVED
+  source: "Approved portfolio design plus editorial-persistence plan at 4e20e44fd3a4cb9ff2345452ecbc846250a9e46e"
+  rationale: "The smallest sufficient persistence slice adds only src/db for Mongo connection ownership, src/content for bounded editorial schemas/queries/bootstrap data, one bootstrap script, focused tests, and modifications required to switch existing public Server Components from runtime fixtures to Mongo reads. MediaAsset, auth, admin, GitHub import, and 3D remain later owners and must not be materialized here."
+
+objective: "Replace runtime fixture ownership with an official-driver MongoDB editorial persistence boundary for SiteProfile and WorkItem, enforce draft/published isolation, and make the existing public portfolio read its current approved content from MongoDB without pulling later V1/V2 infrastructure forward."
+
+scope:
+  required_changes:
+    - "Fresh-bind TASK-0002 revision 1 at the exact handoff base on dev before mutation. Prove repository identity, branch dev, exact base HEAD, clean working tree, remote main unchanged, and required EXECUTION capabilities before any write."
+    - "Add the current stable compatible official mongodb Node.js driver and zod as runtime dependencies. Add Vitest and mongodb-memory-server-core only as dev verification dependencies. Do not add Mongoose, another ODM, a database framework, Docker requirement, or an external test database requirement."
+    - "Extend package scripts with test and content:bootstrap, and make pnpm verify run lint, typecheck, tests, and production build. Preserve Node 24.x and the existing current Next.js/React/shadcn foundation."
+    - "Add a non-secret .env.example documenting MONGODB_URI only. Production/local secrets remain external and must never be committed."
+    - "Create one centralized src/db/mongodb.ts boundary using MongoClient connection reuse suitable for warm Next.js runtimes and development hot reload. Missing MONGODB_URI must fail with a controlled server configuration error. Do not expose the driver or credentials to Client Components."
+    - "Define bounded runtime-validated SiteProfile and WorkItem schemas in src/content/model.ts with schemaVersion=1, the approved identity/content fields, WORK/LAB/ARCHIVE collection values, PRODUCT_DOMAIN/AGENTIC_SYSTEM/COMMERCIAL_OPERATIONAL/SUPPORTING categories, DRAFT/PUBLISHED publication status, approved case-study section kinds, and IMPLEMENTED/VERIFIED/ACCEPTED/DEPLOYED/OPERATED evidence states. Embedded arrays must have conservative finite application limits; do not create generic page-builder or history structures."
+    - "MediaAsset is part of the overall V1 model but is explicitly deferred to the later media slice. Do not create its collection, provider fields, Cloudinary code, or speculative media directory in this task."
+    - "Create non-canonical bootstrap data containing only the approved identity and exactly the two current evidence-backed work candidates. Bootstrap data is migration/seed input only and must not remain the public runtime source of truth."
+    - "Create an idempotent bootstrap script that validates bootstrap documents, upserts the SiteProfile singleton and two WorkItem documents without deleting unrelated records, and creates the currently justified work indexes: unique slug; publicationStatus+collection+featuredRank; publicationStatus+currentRank."
+    - "Create public query functions for SiteProfile, published WORK items, and current published items. Query predicates must enforce publicationStatus=PUBLISHED at the Mongo boundary. Persisted documents must be parsed through runtime schemas before rendering; malformed data must fail closed rather than silently render."
+    - "Use mongodb-memory-server-core in integration tests to exercise the official driver against an ephemeral real MongoDB process. Tests must prove profile round-trip, deterministic published ordering, exclusion of DRAFT work, and rejection of malformed persisted documents. Do not use a mock ODM or pretend pure unit tests are Mongo integration evidence."
+    - "Switch /, /work, /about and /contact plus their focused public compositions from src/content/fixtures.ts to typed Mongo-backed Server Component reads. Remove src/content/fixtures.ts after all runtime imports are gone. Preserve current visual hierarchy, direct-contact-only behavior, evidence-proportional copy, and exactly the two current published work candidates."
+    - "Keep pnpm build independent of a live Mongo endpoint. For this slice, request-time server rendering is acceptable and preferred over client fetching or a bundled runtime fallback. Cross-request cache/revalidation policy is deferred until owner mutations exist and must not be invented here."
+    - "Do not introduce use-client merely for persistence. Do not add API proxy routes, SWR, React Query, client-side data fetching, a second backend, or silent fixture fallback when Mongo is unavailable."
+    - "Update README only with the exact Mongo runtime environment contract, bootstrap command, and verification flow required by this slice. Do not turn README into duplicated architecture authority."
+    - "Run pnpm lint, pnpm typecheck, pnpm test, pnpm build, and pnpm verify. Then use the ephemeral Mongo integration mechanism to seed the approved bootstrap data, run the production Next.js server with that URI, prove HTTP 200 for /, /work, /about and /contact, prove a synthetic DRAFT work item is absent from public output, and inspect for runtime/browser errors."
+    - "Inspect the exact implementation candidate diff and prove there is no Better Auth/admin UI/Cloudinary/MediaAsset persistence/GitHub API/contact backend/analytics/Three.js/3D/video/Redis/queue/event-bus/microservice/separate-backend/theme subsystem/main mutation or unrelated refactor."
+    - "Commit the coherent implementation candidate as the direct child of the exact handoff base, push non-force to dev, create the canonical TASK-0002 report as the report-only direct child, push non-force, fresh-prove final remote/local/main/topology state, and stop NEEDS_REVIEW."
+  allowed_existing_files_or_components:
+    - README.md
+    - .env.example
+    - package.json
+    - pnpm-lock.yaml
+    - scripts/bootstrap-content.ts
+    - src/db/
+    - src/content/
+    - src/app/page.tsx
+    - src/app/work/page.tsx
+    - src/app/about/page.tsx
+    - src/app/contact/page.tsx
+    - src/components/public/
+    - .agent/tasks/TASK-0002/report.yaml
+  expected_files_are_restrictive: true
+
+invariants:
+  - "dev is the only implementation branch for this task; main remains stable and unchanged."
+  - "MongoDB is editorial persistence, not a new application service or independent backend."
+  - "Official MongoDB Node.js driver is used directly; no ODM or generic persistence abstraction is introduced."
+  - "SiteProfile and WorkItem are the only first-class portfolio collections materialized in this slice. MediaAsset remains deferred."
+  - "MongoDB becomes canonical for runtime editorial reads in this slice; bundled bootstrap data is not a runtime fallback or editorial authority."
+  - "Anonymous/public work queries expose PUBLISHED content only. DRAFT content never appears on public routes."
+  - "Software Engineer remains the durable identity and AI-native Products & Agentic Systems remains the current specialization."
+  - "Exactly the two currently evidence-backed flagship candidates are bootstrapped as published work; no commercial flagship is fabricated."
+  - "Public pages remain Server Components by default."
+  - "No support repository mutation is authorized."
+
+forbidden_changes:
+  - "Do not modify main, create/delete/rename branches, force-push, promote, tag, release, or deploy production."
+  - "Do not add Better Auth, authentication, owner/admin routes, organizations, RBAC, Cloudinary, MediaAsset persistence, GitHub API integration, email/contact providers, analytics, Three.js, React Three Fiber, GLB assets, video tooling, Redis, queues, event buses, microservices, a separate backend API, a CMS framework, a generic database/provider abstraction, or Docker orchestration."
+  - "Do not add a theme provider, persisted theme state, or theme toggle."
+  - "Do not add public client-side data fetching, SWR, React Query, or a client-side Mongo boundary."
+  - "Do not keep src/content/fixtures.ts as a silent runtime fallback after Mongo public reads are activated."
+  - "Do not invent portfolio facts, outcomes, customers, revenue, users, metrics, seniority, deployment, or production-operation claims."
+  - "Do not modify the approved design spec, TASK-0001 evidence, or this task during execution. Material architecture/spec changes require revised Architect authority."
+
+gap_policy:
+  local_auto_fix: true
+  scope_expansion: forbidden
+  architecture_change: forbidden
+  spec_change: forbidden
+  dependency_change: revised_contract_required
+  public_contract_change: revised_contract_required
+  blocking_gap_behavior: BLOCKED
+
+continuation_policy:
+  mode: MANUAL
+  stop_conditions:
+    - BLOCKED
+    - STALE_STATE
+    - AUTHORITY_REQUIRED
+    - CURRENT_PHASE_CAPABILITY_UNAVAILABLE
+    - REVIEW_REQUIRED
+    - REVERIFY_REQUIRED
+    - USER_STOP
+
+acceptance_criteria:
+  - id: AC-1
+    requirement: "The application has one bounded official-driver MongoDB persistence boundary without an ODM or second backend."
+    evidence_required: "Exact dependency/config/source diff shows current compatible mongodb + zod, centralized MongoClient reuse, MONGODB_URI server-only configuration, no Mongoose/ODM/database framework, and passing lint/typecheck/build."
+  - id: AC-2
+    requirement: "SiteProfile and WorkItem are explicit, bounded, runtime-validated editorial documents with only currently justified indexes."
+    evidence_required: "Schema tests and exact source inspection prove schemaVersion=1, approved enums/embedded structures, finite array bounds, unique work slug, publicationStatus+collection+featuredRank, publicationStatus+currentRank, and no MediaAsset collection or generic page-builder/history model."
+  - id: AC-3
+    requirement: "MongoDB is the runtime editorial source for the existing public portfolio and draft content fails closed."
+    evidence_required: "Public query integration tests use an ephemeral real MongoDB process through the official driver, published reads are deterministic, DRAFT work is excluded at the query boundary, malformed persisted data is rejected, existing public routes consume typed Mongo reads, and src/content/fixtures.ts is no longer a runtime source/fallback."
+  - id: AC-4
+    requirement: "Existing positioning and evidence integrity survive persistence migration without pulling future product slices forward."
+    evidence_required: "Seeded production-server smoke shows Nguyen Tien Phat / Software Engineer / AI-native Products & Agentic Systems and exactly Knowledge-first IELTS Learning System plus Governed Agentic Engineering System; no commercial flagship or fabricated proof appears; no auth/admin/media/GitHub/contact-backend/analytics/3D infrastructure exists."
+  - id: AC-5
+    requirement: "The persistence slice is deterministically verifiable without operator-managed Atlas or Docker infrastructure."
+    evidence_required: "pnpm lint, pnpm typecheck, pnpm test, pnpm build, and pnpm verify pass; mongodb-memory-server-core integration proof succeeds; production HTTP smoke returns 200 for /, /work, /about and /contact against ephemeral seeded Mongo; a synthetic draft is absent from rendered public output; no browser/runtime error attributable to the slice remains."
+  - id: AC-6
+    requirement: "Publication remains bounded to dev and independently reviewable."
+    evidence_required: "Implementation candidate is the direct child of exact handoff base; canonical report is the report-only direct child; both are pushed non-force to dev; remote main remains 4f6f466ed3153c48c29e53d1bd23ffce289097e3; repository topology remains exactly dev/main; Executor stops NEEDS_REVIEW."
+
+verification:
+  authoritative_verification:
+    required: false
+    rationale: "This slice introduces a material data boundary but no privileged mutation or production deployment. Deterministic schema tests, official-driver ephemeral Mongo integration tests, production-route smoke, exact diff inspection, and ref proof are sufficient; a separate designated verifier is not required."
+  required_checks:
+    - "pnpm lint"
+    - "pnpm typecheck"
+    - "pnpm test"
+    - "pnpm build"
+    - "pnpm verify"
+    - "Ephemeral real-Mongo integration tests through mongodb-memory-server-core"
+    - "Production-server HTTP 200 smoke for /, /work, /about and /contact against seeded ephemeral Mongo"
+    - "Synthetic DRAFT exclusion proof"
+    - "Exact diff inspection for forbidden later-slice infrastructure and client boundaries"
+
+capability_requirements:
+  EXECUTION:
+    required:
+      - repository_content_read
+      - repository_content_write
+      - native_repository_execution
+      - git_history_read
+      - git_commit
+      - git_push
+      - remote_ref_read
+  REVIEW:
+    required:
+      - repository_content_read
+      - repository_content_write
+      - git_history_read
+      - git_commit
+      - git_push
+      - remote_ref_read
+
+git_authority:
+  commit: true
+  push: true
+  create_branch: false
+  promote: false
+  force_push: false
+  tag: false
+  release: false
+
+execution_ready: true
