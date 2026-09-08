@@ -1,0 +1,128 @@
+protocol_version: 3
+
+task_id: TASK-0003
+task_revision: 1
+report_revision: 1
+state: REPORTED
+
+task_source:
+  path: .agent/tasks/TASK-0003/task.yaml
+  commit: "c16bb72f9bf91f2b0886c8e10f27a262547fbc4b"
+
+execution:
+  repository: phatnguyen03022001/phat-portfolio
+  branch:
+    name: dev
+    role: primary-development
+  authorized_base_head: "c16bb72f9bf91f2b0886c8e10f27a262547fbc4b"
+  final_execution_head: "3648fd8342b2e48c4cdd87b8098723e3b9fd3977"
+
+skill_library:
+  repository: phatnguyen03022001/agent-skills
+  authorized_revision: "3c4a31598da4c4e12cb0925bee1b471f160d3b4e"
+  resolved_required_skills:
+    - executor
+    - verification
+    - github-workflow
+
+capability_preflight:
+  phase: EXECUTION
+  required:
+    - repository_content_read
+    - repository_content_write
+    - native_repository_execution
+    - git_history_read
+    - git_commit
+    - git_push
+    - remote_ref_read
+  available:
+    - repository_content_read
+    - repository_content_write
+    - native_repository_execution
+    - git_history_read
+    - git_commit
+    - git_push
+    - remote_ref_read
+  missing: []
+  passed: true
+  evidence: "GitHub connector resolved canonical repository/task/refs and Agent Runtime inspected the designated local working copy, fetched refs, read Git history, and ran native repository verification. The implementation candidate had already been committed and published non-force to dev in the prior execution window."
+
+authoritative_verification:
+  required: false
+  performed: false
+  result: NOT_REQUIRED
+  evidence: "The canonical task designates deterministic source/tests, official-driver ephemeral Mongo integration, production-route smoke, exact diff/dependency inspection, and ref proof as sufficient evidence."
+
+implementation_publication:
+  pushed: true
+  remote: origin
+  branch: dev
+  implementation_head: "3648fd8342b2e48c4cdd87b8098723e3b9fd3977"
+  implementation_parent: "c16bb72f9bf91f2b0886c8e10f27a262547fbc4b"
+  remote_dev_before_report: "3648fd8342b2e48c4cdd87b8098723e3b9fd3977"
+  remote_main_before_report: "4f6f466ed3153c48c29e53d1bd23ffce289097e3"
+
+environment:
+  local_node_version: "v26.8.1"
+  package_engine_node: "24.x"
+  pnpm_version: "11.24.0"
+  note: "Verification was performed under Node v26.8.1 while package.json preserves the Node 24.x engine contract. pnpm emitted unsupported-engine warnings. This report does not claim Node 24 execution."
+
+acceptance_evidence:
+  - criterion_id: AC-1
+    status: PASS
+    evidence: "package.json adds react-markdown 10.1.0 as the only new runtime dependency. src/components/public/markdown-content.tsx server-renders ReactMarkdown with skipHtml and the explicit safeMarkdownUrl transform; src/content/case-study.test.ts proves approved CommonMark rendering while raw script/iframe markup and javascript/data hrefs do not become executable surfaces. No rehype-raw, MDX, arbitrary component execution, or use-client boundary was introduced."
+  - criterion_id: AC-2
+    status: PASS
+    evidence: "src/content/queries.ts getPublishedWorkBySlug uses the Mongo predicate { slug, publicationStatus: PUBLISHED } and parses persisted results with workItemSchema. mongodb-memory-server-core integration tests prove published lookup, DRAFT exclusion, missing-null behavior, and malformed published content rejection."
+  - criterion_id: AC-3
+    status: PASS
+    evidence: "WorkCaseStudy renders repository references, canonically ordered approved sections, explicit evidence-state labels when records exist, technologies/external links when present, and the honest empty evidence state when none exist. Tests prove no synthetic percentage/readiness UI, and WorkItem remains the sole work content model."
+  - criterion_id: AC-4
+    status: PASS
+    evidence: "Selected-work cards link with Next.js Link to both approved /work/<slug> routes. Bootstrap enrichment adds only the approved OVERVIEW and KNOWN_LIMITATIONS content for the two existing flagship candidates. Existing production next start smoke against seeded ephemeral Mongo returned 200 for /work and both published case slugs, 404 for a synthetic DRAFT slug and a missing slug, with no runtime error marker and no active unsafe Markdown/raw-HTML surface."
+  - criterion_id: AC-5
+    status: PASS
+    evidence: "Under Node v26.8.1, pnpm lint, pnpm typecheck, pnpm test, pnpm build, and pnpm verify passed; pnpm test passed 3 files / 23 tests including real-Mongo integration and server-render Markdown safety tests. Production route smoke passed against ephemeral seeded Mongo. Fresh candidate inspection found no use-client/client-fetching boundary, and git diff --check passed."
+  - criterion_id: AC-6
+    status: NOT_PROVEN
+    evidence: "Pre-publication predicates are proven: implementation candidate 3648fd8342b2e48c4cdd87b8098723e3b9fd3977 is the single-parent direct child of exact base c16bb72f9bf91f2b0886c8e10f27a262547fbc4b, dev resolved exactly to the candidate, main remained 4f6f466ed3153c48c29e53d1bd23ffce289097e3, and remote topology contained only dev/main. This report intentionally does not self-attest that its own commit is already the published report-only child; that predicate requires fresh post-publication Git/ref proof outside this report."
+
+executor_checks:
+  - check_id: BINDING-AND-TOPOLOGY
+    result: PASS
+    evidence: "Fresh GitHub and local inspection resolved owner/repo phatnguyen03022001/phat-portfolio, branch dev, local HEAD and origin/dev at 3648fd8342b2e48c4cdd87b8098723e3b9fd3977, origin/main at 4f6f466ed3153c48c29e53d1bd23ffce289097e3, and remote branches exactly dev/main."
+  - check_id: CANDIDATE-LINEAGE
+    result: PASS
+    evidence: "Git commit metadata and compare proof show candidate 3648fd8342b2e48c4cdd87b8098723e3b9fd3977 has exactly one parent, c16bb72f9bf91f2b0886c8e10f27a262547fbc4b, with the base-to-candidate compare exactly one commit ahead."
+  - check_id: PNPM-LINT
+    result: PASS
+    evidence: "pnpm lint exited 0 under Node v26.8.1."
+  - check_id: PNPM-TYPECHECK
+    result: PASS
+    evidence: "pnpm typecheck exited 0 under Node v26.8.1 after Next route type generation."
+  - check_id: PNPM-TEST
+    result: PASS
+    evidence: "pnpm test exited 0 with 3 test files and 23 tests passed, including mongodb-memory-server-core integration tests and Markdown/case-study server-render tests."
+  - check_id: PNPM-BUILD
+    result: PASS
+    evidence: "pnpm build exited 0 under Node v26.8.1; Next.js 16.3.4 built successfully and /work/[slug] remained request-time dynamic."
+  - check_id: PNPM-VERIFY
+    result: PASS
+    evidence: "pnpm verify exited 0 and ran lint, typecheck, test, and production build under Node v26.8.1."
+  - check_id: PRODUCTION-SMOKE
+    result: PASS
+    evidence: "Existing prior-execution production next start smoke against ephemeral seeded Mongo returned 200 for /work, 200 for knowledge-first-ielts-learning-system, 200 for governed-agentic-engineering-system, 404 for a synthetic DRAFT slug, and 404 for a missing slug; runtime error markers were absent and unsafe Markdown/raw HTML did not become active."
+  - check_id: DIFF-DEPENDENCY-BOUNDARY
+    result: PASS
+    evidence: "Base-to-candidate compare contains exactly the authorized case-study slice; react-markdown is the only newly added runtime dependency. Source/diff inspection found no Better Auth, admin UI, Cloudinary/MediaAsset persistence, GitHub API integration, contact backend, analytics, Three.js/3D/video, Redis/queue/event bus/microservice, separate backend, client-fetching/theme subsystem, rehype-raw, or MDX. git diff --check passed."
+  - check_id: LOCAL-STATE-PRESERVATION
+    result: PASS
+    evidence: "The designated local working copy was inspected without reset/clean/stash. Existing untracked generated artifacts .next/, node_modules/, next-env.d.ts, and tsconfig.tsbuildinfo were preserved and were not adopted into the report or candidate."
+
+deviations:
+  - id: LOCAL-NODE-RUNTIME
+    classification: ENVIRONMENT
+    impact: "Verification ran under Node v26.8.1 while the repository engine contract remains Node 24.x. The checks passed with unsupported-engine warnings; no Node-24 execution is claimed."
+
+result: NEEDS_REVIEW
