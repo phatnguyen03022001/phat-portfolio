@@ -1,0 +1,211 @@
+protocol_version: 3
+
+task_id: TASK-0004
+task_revision: 1
+state: APPROVED
+
+origin:
+  type: user_request
+  task_id: ""
+  gap_id: PORTFOLIO-V1-OWNER-AUTH-ADMIN-SHELL
+
+architect_binding:
+  target_repository: phatnguyen03022001/phat-portfolio
+
+target:
+  repository: phatnguyen03022001/phat-portfolio
+  branch:
+    name: dev
+    role: primary-development
+
+execution_base:
+  mode: handoff_snapshot
+  capture: after_final_planning_commit
+  require_exact_match: true
+
+skill_library:
+  repository: phatnguyen03022001/agent-skills
+  revision: "3c4a31598da4c4e12cb0925bee1b471f160d3b4e"
+
+architect_analysis_skills:
+  - architect
+  - simplicity
+
+execution_skills:
+  required:
+    - executor
+    - verification
+    - github-workflow
+  recommended:
+    - simplicity
+
+external_skills:
+  architect_analysis: []
+  execution_required: []
+  execution_recommended:
+    - superpowers/executing-plans
+    - superpowers/test-driven-development
+    - superpowers/systematic-debugging
+    - superpowers/verification-before-completion
+
+authority_sources:
+  - source: "phatnguyen03022001/phat-portfolio@f862a47e83a19f2622f6071c9b0fbd258bd2f72d:docs/superpowers/specs/2026-09-08-personal-engineering-portfolio-design.md"
+    role: "Approved owner/admin IA, Better Auth with GitHub OAuth, immutable owner authorization, Mongo persistence and staged-scope authority."
+    precedence: 1
+  - source: "phatnguyen03022001/phat-portfolio@f862a47e83a19f2622f6071c9b0fbd258bd2f72d:docs/superpowers/plans/2026-09-08-owner-auth-admin-shell.md"
+    role: "Approved implementation decomposition and exact auth runtime/configuration boundary for this slice."
+    precedence: 2
+  - source: "phatnguyen03022001/phat-portfolio@83b1b38c71d91408f0f0786449e9577753f40dd6:.agent/tasks/TASK-0003/review.yaml"
+    role: "Accepted public dossier and Mongo-backed baseline that this task preserves."
+    precedence: 3
+
+structure_authority:
+  status: RESOLVED
+  source: "Approved portfolio design plus owner-auth/admin-shell plan at f862a47e83a19f2622f6071c9b0fbd258bd2f72d"
+  rationale: "Add only one auth owner, one Better Auth route, one anonymous sign-in surface, one protected admin route group and focused admin components. Reuse the existing Mongo connection owner. No generic permission framework, admin CMS, editorial mutation layer, media boundary or GitHub import boundary is justified."
+
+objective: "Establish one owner-only Better Auth + GitHub OAuth security boundary and a protected read-only /admin shell, using immutable GitHub account identity for authorization while preserving the accepted anonymous public portfolio."
+
+scope:
+  required_changes:
+    - "Fresh-bind TASK-0004 revision 1 at exact base f862a47e83a19f2622f6071c9b0fbd258bd2f72d on dev; prove repository/branch/base, unchanged main, dev/main-only topology and required EXECUTION capabilities before mutation."
+    - "Implement the owner-auth/admin-shell plan exactly within its approved dependency, runtime configuration, file-ownership and build-independence boundaries."
+    - "Add Better Auth 1.7.3 and its official Mongo adapter 1.7.3 only. Reuse the existing centralized MongoClient/Db ownership; do not create another database/session service or ODM."
+    - "GitHub is the only sign-in method. Account linking, email/password, generic registration, organizations, memberships, RBAC and unrelated auth plugins remain absent."
+    - "OAuth admission must fail closed unless the provider is GitHub and the raw immutable provider account id equals the configured owner id. Mutable login/name/email/avatar values never authorize."
+    - "Protected authorization must independently require a live Better Auth session plus a linked GitHub account whose provider account id equals the configured owner id and whose Better Auth user id equals the session user id. Session or cookie presence alone is insufficient."
+    - "Mount the Better Auth Next.js route, add the minimal GitHub sign-in/sign-out interaction, and keep runtime auth initialization lazy enough that production build needs neither live Mongo nor real provider runtime configuration."
+    - "Create anonymous /admin/sign-in and a server-protected route group for exactly /admin, /admin/work, /admin/profile and /admin/media. The shell remains read-only; editing, publishing, uploads and import are deferred."
+    - "Keep Better Auth CSRF/origin protections enabled. Do not introduce broad origin/proxy/cross-domain trust configuration without revised authority."
+    - "Use TDD and the existing ephemeral real-Mongo verification stack for runtime config, owner admission, linked-account authorization, wrong-provider/wrong-owner/wrong-user rejection and Better Auth Mongo integration."
+    - "Run lint, typecheck, tests, production build, repository verify and diff-check; record the actual Node runtime truthfully and preserve engines.node=24.x."
+    - "Run production Next.js smoke with ephemeral Mongo and synthetic auth configuration: /admin/sign-in is anonymous 200; protected admin routes redirect anonymously; Better Auth route is mounted; representative public routes remain anonymously operational."
+    - "Inspect browser/static output for leakage of synthetic sensitive-auth sentinel values and inspect exact diff for cookie-only authorization, future-slice infrastructure or unrelated services."
+    - "Do not claim live GitHub OAuth callback success unless an authorized real provider environment was actually used; otherwise record live-provider proof as later activation evidence."
+    - "Agent Runtime, secure tunnel, parent execution transport and shared operator infrastructure are not task-owned. Never terminate/restart/reconfigure them; cleanup only positively identified task-owned processes/resources."
+    - "Publish one coherent implementation candidate as the direct child of the exact base, then a report-only direct child; push non-force to dev, fresh-prove remote/local/main/topology and stop NEEDS_REVIEW."
+  allowed_existing_files_or_components:
+    - .env.example
+    - README.md
+    - package.json
+    - pnpm-lock.yaml
+    - src/db/mongodb.ts
+    - src/auth/
+    - src/app/api/auth/[...all]/route.ts
+    - src/app/admin/
+    - src/components/admin/
+    - src/app/globals.css
+    - .agent/tasks/TASK-0004/report.yaml
+  expected_files_are_restrictive: true
+
+invariants:
+  - "dev is the only implementation branch; main remains unchanged."
+  - "Exactly one logical role exists: owner/admin, authenticated exclusively through GitHub OAuth."
+  - "Authorization is not authenticated=admin; immutable GitHub provider identity is checked at admission and protected server authorization."
+  - "Better Auth owns auth persistence and reuses the existing official-driver Mongo connection owner."
+  - "Every protected admin page uses live server session/account validation; client state or cookie presence alone is never authoritative."
+  - "The admin shell is read-only and contains only Dashboard, Work, Profile and Media destinations."
+  - "Public routes remain anonymous and TASK-0003 dossier behavior remains intact."
+  - "Sensitive runtime values and the actual owner provider id remain external to repository/browser output."
+  - "Agent Runtime/tunnel/parent/shared operator infrastructure are never task-owned cleanup targets."
+  - "No support repository mutation is authorized."
+
+forbidden_changes:
+  - "Do not modify main, create/delete/rename branches, force-push, promote, tag, release or deploy production."
+  - "Do not add another auth framework, Better Auth admin/organization features, password/magic-link/passkey/2FA flows, account-linking UI, role tables, RBAC, organizations, Redis or auth microservices."
+  - "Do not authorize with mutable GitHub profile attributes or repository/organization membership."
+  - "Do not weaken Better Auth origin/CSRF protections or introduce broad proxy/cross-domain trust."
+  - "Do not add editorial mutations, Cloudinary/MediaAsset persistence, upload UI, GitHub import, contact backend, analytics, 3D/video, queue/event-bus/microservice/separate-backend, generic CMS or theme subsystem."
+  - "Do not expose sensitive auth/provider/session/Mongo runtime material in client code, committed content, logs or report prose."
+  - "Do not modify approved spec, accepted prior-task evidence or this task during execution. Material auth/security/dependency/public-contract changes require revised Architect authority."
+  - "Do not terminate, restart, signal or reconfigure Agent Runtime, secure tunnel, parent transport or unrelated operator processes."
+
+gap_policy:
+  local_auto_fix: true
+  scope_expansion: forbidden
+  architecture_change: forbidden
+  spec_change: forbidden
+  dependency_change: revised_contract_required
+  public_contract_change: revised_contract_required
+  blocking_gap_behavior: BLOCKED
+
+continuation_policy:
+  mode: MANUAL
+  stop_conditions:
+    - BLOCKED
+    - STALE_STATE
+    - AUTHORITY_REQUIRED
+    - CURRENT_PHASE_CAPABILITY_UNAVAILABLE
+    - REVIEW_REQUIRED
+    - REVERIFY_REQUIRED
+    - USER_STOP
+
+acceptance_criteria:
+  - id: AC-1
+    requirement: "Better Auth is integrated through the accepted Mongo ownership and bounded server-only runtime configuration."
+    evidence_required: "Exact dependency/config/db/auth diff plus ephemeral-Mongo integration proves Better Auth core + official Mongo adapter only, one centralized Mongo ownership, controlled runtime failure, build independence, and no second auth/data service."
+  - id: AC-2
+    requirement: "Only the configured immutable GitHub owner identity can enter and satisfy owner authorization."
+    evidence_required: "Negative and positive tests plus source inspection prove immutable GitHub provider-id admission and independent live-session plus linked-account authorization; wrong provider/id/user, absent id and mutable-profile-only matches fail closed."
+  - id: AC-3
+    requirement: "The approved admin shell is protected server-side and remains read-only."
+    evidence_required: "Production smoke and source prove anonymous sign-in access, unauthorized redirects for all four protected admin destinations, real server session/account validation, GitHub-only sign-in, and absence of mutation/account-management UI."
+  - id: AC-4
+    requirement: "Auth remains isolated from public routes and later V1 slices."
+    evidence_required: "Representative public route smoke remains anonymous; exact diff/browser scan proves no sensitive runtime leakage, cookie-only security, editorial/media/GitHub-import/analytics/3D/backend/role-framework expansion."
+  - id: AC-5
+    requirement: "Security-focused verification is deterministic and truthful without fabricated live-provider evidence."
+    evidence_required: "lint, typecheck, tests, build, verify and diff-check pass; real-Mongo auth integration and owner-policy negative tests pass; production smoke passes; actual Node version is recorded; live GitHub callback is claimed only if truly exercised."
+  - id: AC-6
+    requirement: "Execution cleanup respects task process ownership."
+    evidence_required: "No Agent Runtime/tunnel/parent/shared-process termination or restart occurs; cleanup is limited to positively identified task-owned resources."
+  - id: AC-7
+    requirement: "Publication remains bounded to dev and independently reviewable."
+    evidence_required: "Candidate is direct child of exact base; report is report-only direct child; both are pushed non-force to dev; main remains 4f6f466ed3153c48c29e53d1bd23ffce289097e3; topology remains dev/main; Executor stops NEEDS_REVIEW."
+
+verification:
+  authoritative_verification:
+    required: false
+    rationale: "The slice is security-sensitive, so adversarial negative predicates, real-Mongo adapter integration, secret-leak inspection, production-route smoke and trigger-expanded Architect review are mandatory. Live provider/deployment assurance remains a later activation boundary rather than fabricated local evidence."
+  required_checks:
+    - "pnpm lint"
+    - "pnpm typecheck"
+    - "pnpm test"
+    - "pnpm build"
+    - "pnpm verify"
+    - "git diff --check"
+    - "Ephemeral real-Mongo Better Auth adapter integration"
+    - "Immutable-owner admission and linked-account authorization negative tests"
+    - "Production Next.js auth/admin/public smoke with synthetic runtime configuration"
+    - "Browser/static sensitive-sentinel and exact forbidden-diff inspection"
+    - "Task-owned process cleanup proof"
+
+capability_requirements:
+  EXECUTION:
+    required:
+      - repository_content_read
+      - repository_content_write
+      - native_repository_execution
+      - git_history_read
+      - git_commit
+      - git_push
+      - remote_ref_read
+  REVIEW:
+    required:
+      - repository_content_read
+      - repository_content_write
+      - git_history_read
+      - git_commit
+      - git_push
+      - remote_ref_read
+
+git_authority:
+  commit: true
+  push: true
+  create_branch: false
+  promote: false
+  force_push: false
+  tag: false
+  release: false
+
+execution_ready: true
