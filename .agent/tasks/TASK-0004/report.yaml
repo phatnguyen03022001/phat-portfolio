@@ -1,0 +1,134 @@
+protocol_version: 3
+
+task_id: TASK-0004
+task_revision: 1
+report_revision: 1
+state: REPORTED
+
+task_source:
+  path: .agent/tasks/TASK-0004/task.yaml
+  commit: "dea454c5221839b864333add51a35a144e187445"
+
+execution:
+  repository: phatnguyen03022001/phat-portfolio
+  branch:
+    name: dev
+    role: primary-development
+  authorized_base_head: "dea454c5221839b864333add51a35a144e187445"
+  final_execution_head: "d647d310979d82149eb91e443e1df552c3ab1ece"
+
+skill_library:
+  repository: phatnguyen03022001/agent-skills
+  authorized_revision: "3c4a31598da4c4e12cb0925bee1b471f160d3b4e"
+  resolved_required_skills:
+    - executor
+    - verification
+    - github-workflow
+
+capability_preflight:
+  phase: EXECUTION
+  required:
+    - repository_content_read
+    - repository_content_write
+    - native_repository_execution
+    - git_history_read
+    - git_commit
+    - git_push
+    - remote_ref_read
+  available:
+    - repository_content_read
+    - repository_content_write
+    - native_repository_execution
+    - git_history_read
+    - git_commit
+    - git_push
+    - remote_ref_read
+  missing: []
+  passed: true
+  evidence: "GitHub resolved canonical task/refs at the exact handoff base; Agent Runtime provided native isolated repository execution, commit identity and a successful non-mutating push preflight before source mutation."
+
+authoritative_verification:
+  required: false
+  performed: false
+  result: NOT_REQUIRED
+  evidence: "TASK-0004 requires deterministic negative auth predicates, official-adapter ephemeral Mongo integration, production smoke, leak inspection, exact diff checks and independent Architect review rather than a designated verifier."
+
+implementation_publication:
+  pushed: true
+  remote: origin
+  branch: dev
+  implementation_head: "d647d310979d82149eb91e443e1df552c3ab1ece"
+  implementation_parent: "dea454c5221839b864333add51a35a144e187445"
+  remote_dev_before_report: "d647d310979d82149eb91e443e1df552c3ab1ece"
+  remote_main_before_report: "4f6f466ed3153c48c29e53d1bd23ffce289097e3"
+
+environment:
+  local_node_version: "v24.19.0"
+  package_engine_node: "24.x"
+  pnpm_version: "11.24.0"
+
+acceptance_evidence:
+  - criterion_id: AC-1
+    status: PASS
+    evidence: "package.json and pnpm-lock.yaml add only better-auth 1.7.3 and @better-auth/mongo-adapter 1.7.3 as the new runtime dependency family. src/auth/config.ts validates five server-only auth values with controlled generic failure; src/db/mongodb.ts exposes Db plus the same centralized MongoClient; src/auth/server.ts constructs the official Mongo adapter from those handles and initializes Better Auth lazily. Real mongodb-memory-server-core tests prove shared-client ownership and a real anonymous Better Auth session lookup. Production build passed without live Mongo or real auth/provider configuration."
+  - criterion_id: AC-2
+    status: PASS
+    evidence: "Owner-policy tests prove OAuth admission accepts only provider=github with raw profile.id equal to the configured immutable owner id and rejects wrong provider/id, absent id, and mutable login/email-only matches. Separate authorization tests prove a live session is necessary and accepts only a linked account tuple providerId=github, accountId=configured owner id, userId=session.user.id; wrong account/user/provider and session absence fail closed. Better Auth account linking is disabled."
+  - criterion_id: AC-3
+    status: PASS
+    evidence: "The Better Auth Next route is mounted lazily; /admin/sign-in is anonymous and GitHub-only; src/app/admin/(protected)/layout.tsx performs server getSession plus listUserAccounts authorization before rendering. The shell exposes exactly Dashboard, Work, Profile and Media. Production next start smoke returned 200 for /admin/sign-in and anonymous 307 redirects to /admin/sign-in for /admin, /admin/work, /admin/profile and /admin/media. No editorial mutation, publishing, upload, import, registration, role or account-management UI was added."
+  - criterion_id: AC-4
+    status: PASS
+    evidence: "Production smoke against seeded ephemeral Mongo returned 200 for /, /work and both accepted case-study routes while anonymous auth remained isolated to /admin and /api/auth. Runtime response scanning and built .next output scanning found none of the distinct synthetic auth/owner sentinel values. Exact production-source inspection found no cookie authorization shortcut, CSRF/origin-disable option, broad trusted-origin/cross-domain configuration, editorial/media/GitHub-import/analytics/3D/backend/queue/Redis/role-framework expansion or unrelated service."
+  - criterion_id: AC-5
+    status: PASS
+    evidence: "Under Node v24.19.0 with package engines.node=24.x and pnpm 11.24.0, pnpm lint, pnpm typecheck, pnpm test, pnpm build, pnpm verify and git diff --check all exited 0. pnpm test passed 7 files / 51 tests including real-Mongo adapter and adversarial owner authorization tests. Production synthetic-config smoke passed. No real GitHub provider credentials/environment were used, so this report does not claim live GitHub OAuth callback success; that remains later activation evidence."
+  - criterion_id: AC-6
+    status: PASS
+    evidence: "The production smoke started one positively identified task-owned Next.js child and one mongodb-memory-server instance; the Next child exited after task-issued SIGTERM and MongoMemoryServer.stop completed. Agent Runtime, tunnel, parent transport and unrelated operator processes were never signaled, restarted or reconfigured. The pnpm-generated unauthorized workspace artifact was removed only after proving it was a regular file created after the clean isolated task base."
+  - criterion_id: AC-7
+    status: NOT_PROVEN
+    evidence: "Pre-report publication predicates are proven: implementation candidate d647d310979d82149eb91e443e1df552c3ab1ece is the direct child of exact base dea454c5221839b864333add51a35a144e187445 and was pushed non-force to dev; fresh GitHub proof resolved dev to that candidate, main unchanged at 4f6f466ed3153c48c29e53d1bd23ffce289097e3, with topology exactly dev/main. This report intentionally does not self-attest that its own future commit is already the report-only published child; that requires fresh post-publication Git/ref proof outside this artifact."
+
+executor_checks:
+  - check_id: BINDING-AND-TOPOLOGY
+    result: PASS
+    evidence: "Fresh GitHub authority bound phatnguyen03022001/phat-portfolio TASK-0004 revision 1 to exact base dea454c5221839b864333add51a35a144e187445; main remained 4f6f466ed3153c48c29e53d1bd23ffce289097e3 and remote topology was exactly dev/main."
+  - check_id: TDD-OWNER-AUTH
+    result: PASS
+    evidence: "Focused tests were observed RED before production modules existed, then GREEN for config (9), immutable owner policy (10), real-Mongo/server auth integration (7) and admin-shell/lazy-route behavior (2)."
+  - check_id: REAL-MONGO-BETTER-AUTH
+    result: PASS
+    evidence: "mongodb-memory-server-core integration constructed Better Auth 1.7.3 with @better-auth/mongo-adapter 1.7.3 over the existing MongoClient/Db owner and completed a real anonymous getSession lookup."
+  - check_id: PNPM-LINT
+    result: PASS
+    evidence: "pnpm lint exited 0 under Node v24.19.0."
+  - check_id: PNPM-TYPECHECK
+    result: PASS
+    evidence: "pnpm typecheck exited 0 after Next route type generation under Node v24.19.0."
+  - check_id: PNPM-TEST
+    result: PASS
+    evidence: "pnpm test exited 0 with 7 files and 51 tests passed."
+  - check_id: PNPM-BUILD
+    result: PASS
+    evidence: "pnpm build exited 0 without live Mongo or real auth/provider runtime configuration; Next.js 16.3.4 built all public/admin/auth routes and kept them request-time dynamic where required."
+  - check_id: PNPM-VERIFY
+    result: PASS
+    evidence: "Fresh pnpm verify exited 0 and reran lint, typecheck, 51 tests and production build under Node v24.19.0."
+  - check_id: PRODUCTION-SMOKE
+    result: PASS
+    evidence: "One-shot production next start smoke used ephemeral seeded Mongo plus synthetic auth configuration: sign-in 200, all four protected admin routes redirected anonymously, /api/auth/get-session returned 200/null, and representative public routes including both case studies returned 200."
+  - check_id: SENTINEL-AND-FORBIDDEN-DIFF
+    result: PASS
+    evidence: "Runtime response and built-output scans found no synthetic sensitive-auth/owner sentinels; exact scoped production-source inspection found no cookie-only authorization, CSRF/origin bypass, future-slice service or unauthorized dependency/configuration; git diff --check passed."
+  - check_id: CANDIDATE-LINEAGE-AND-PUSH
+    result: PASS
+    evidence: "Candidate d647d310979d82149eb91e443e1df552c3ab1ece has single parent dea454c5221839b864333add51a35a144e187445 and was pushed non-force directly to dev after a fresh remote-base/main refresh."
+  - check_id: LIVE-GITHUB-OAUTH
+    result: NOT_RUN
+    evidence: "No authorized real GitHub OAuth provider environment was used. Live callback success is intentionally not claimed and remains later activation evidence."
+  - check_id: TASK-OWNED-PROCESS-CLEANUP
+    result: PASS
+    evidence: "Only the positively identified smoke Next child and ephemeral Mongo resource were stopped; shared Agent Runtime/tunnel/parent/operator infrastructure was untouched."
+
+result: NEEDS_REVIEW
