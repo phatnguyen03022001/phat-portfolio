@@ -1,6 +1,17 @@
-import { workCandidates } from "@/content/fixtures";
+import type { WorkCategory, WorkItem } from "../../content/model";
 
-export function SelectedWork() {
+type SelectedWorkProps = {
+  workItems: WorkItem[];
+};
+
+const categoryLabels: Record<WorkCategory, string> = {
+  PRODUCT_DOMAIN: "Product / Domain Engineering",
+  AGENTIC_SYSTEM: "Agentic Engineering System",
+  COMMERCIAL_OPERATIONAL: "Commercial / Operational Software",
+  SUPPORTING: "Supporting",
+};
+
+export function SelectedWork({ workItems }: SelectedWorkProps) {
   return (
     <section className="section" aria-labelledby="selected-work-title">
       <div className="site-container">
@@ -12,20 +23,22 @@ export function SelectedWork() {
             </h2>
           </div>
           <p className="section-copy">
-            This first portfolio slice shows only the two current evidence-backed flagship candidates. It does not manufacture outcomes or production claims.
+            This portfolio shows only published work with evidence behind the claim. It does not manufacture outcomes or production claims.
           </p>
         </div>
         <div className="work-grid">
-          {workCandidates.map((work, index) => (
+          {workItems.map((work, index) => (
             <article className="work-card" key={work.slug}>
               <div>
-                <p className="work-card__index">0{index + 1}</p>
-                <p className="work-card__category">{work.category}</p>
+                <p className="work-card__index">{String(index + 1).padStart(2, "0")}</p>
+                <p className="work-card__category">{categoryLabels[work.category]}</p>
               </div>
               <div>
                 <h3 className="work-card__title">{work.title}</h3>
                 <p className="work-card__summary">{work.summary}</p>
-                <p className="status-line">{work.status}</p>
+                <p className="status-line">
+                  {work.currentRank === null ? "Published work" : "Current evidence-backed candidate"}
+                </p>
               </div>
             </article>
           ))}

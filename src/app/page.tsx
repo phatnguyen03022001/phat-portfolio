@@ -5,14 +5,19 @@ import { CurrentBuilding } from "@/components/public/current-building";
 import { EngineeringApproach } from "@/components/public/engineering-approach";
 import { Hero } from "@/components/public/hero";
 import { SelectedWork } from "@/components/public/selected-work";
+import { getSiteProfile, listCurrentPublishedWork } from "@/content/queries";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const [profile, currentWork] = await Promise.all([getSiteProfile(), listCurrentPublishedWork()]);
+
   return (
     <>
-      <Hero />
-      <SelectedWork />
-      <EngineeringApproach />
-      <CurrentBuilding />
+      <Hero identity={profile.identity} />
+      <SelectedWork workItems={currentWork} />
+      <EngineeringApproach principles={profile.engineeringPrinciples} />
+      <CurrentBuilding currentBuilding={profile.home.currentBuilding} />
 
       <section className="section" aria-labelledby="evidence-title">
         <div className="site-container split-grid">
@@ -24,9 +29,7 @@ export default function Home() {
           </div>
           <div className="info-panel">
             <h3>Claims stay smaller than the evidence.</h3>
-            <p>
-              Implemented, verified, accepted, deployed, and operated are different states. This portfolio does not collapse them into synthetic scores or imply proof that does not exist.
-            </p>
+            <p>{profile.home.evidencePhilosophy}</p>
           </div>
         </div>
       </section>
@@ -40,9 +43,7 @@ export default function Home() {
             </h2>
           </div>
           <div>
-            <p className="section-copy">
-              AI-native Products & Agentic Systems is the current specialization. The goal is not to display complexity, but to compress it into software that remains understandable and reviewable.
-            </p>
+            <p className="section-copy">{profile.home.aboutSummary}</p>
             <div className="section-actions">
               <Link className="text-link" href="/about">
                 Read the approach
@@ -61,9 +62,7 @@ export default function Home() {
             </h2>
           </div>
           <div>
-            <p className="section-copy">
-              For engineering conversations, use the direct contact route. No form, tracking layer, or inbox infrastructure is required for this foundation.
-            </p>
+            <p className="section-copy">{profile.home.contactPrompt}</p>
             <div className="section-actions">
               <Button nativeButton={false} render={<Link href="/contact" />} size="lg">
                 Contact

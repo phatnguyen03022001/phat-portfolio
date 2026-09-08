@@ -1,11 +1,15 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { identity } from "@/content/fixtures";
+import type { SiteProfile } from "@/content/model";
 
 import { PlaceholderVisual } from "./placeholder-visual";
 
-export function Hero() {
+type HeroProps = {
+  identity: SiteProfile["identity"];
+};
+
+export function Hero({ identity }: HeroProps) {
   return (
     <section className="site-container hero" aria-labelledby="hero-title">
       <div>
@@ -14,9 +18,7 @@ export function Hero() {
           {identity.name}
         </h1>
         <p className="hero__specialization">{identity.specialization}</p>
-        <p className="lede">
-          I build software around clear ownership, bounded complexity, and evidence that can survive review.
-        </p>
+        <p className="lede">{identity.intro}</p>
         <div className="hero__actions">
           <Button nativeButton={false} render={<Link href="/work" />} size="lg">
             View selected work

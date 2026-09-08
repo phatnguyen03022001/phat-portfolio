@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
 
-import { engineeringPrinciples, identity } from "@/content/fixtures";
+import { getSiteProfile } from "@/content/queries";
 
 export const metadata: Metadata = {
   title: "About",
   description: "Engineering positioning and working principles for Nguyen Tien Phat.",
 };
 
-export default function AboutPage() {
+export const dynamic = "force-dynamic";
+
+export default async function AboutPage() {
+  const profile = await getSiteProfile();
+
   return (
     <>
       <section className="site-container page-intro" aria-labelledby="about-page-title">
-        <p className="eyebrow">{identity.role}</p>
+        <p className="eyebrow">{profile.identity.role}</p>
         <h1 className="display-title" id="about-page-title">
-          {identity.name}
+          {profile.identity.name}
         </h1>
-        <p className="hero__specialization">{identity.specialization}</p>
-        <p className="lede">
-          I prefer evidence-first engineering, narrow ownership boundaries, and the smallest system that satisfies the real requirement.
-        </p>
+        <p className="hero__specialization">{profile.identity.specialization}</p>
+        <p className="lede">{profile.home.aboutSummary}</p>
       </section>
 
       <section className="section" aria-labelledby="principles-title">
@@ -35,7 +37,7 @@ export default function AboutPage() {
             </p>
           </div>
           <div className="approach-grid">
-            {engineeringPrinciples.map((principle) => (
+            {profile.engineeringPrinciples.map((principle) => (
               <article className="approach-card" key={principle.title}>
                 <h3>{principle.title}</h3>
                 <p>{principle.description}</p>

@@ -1,6 +1,10 @@
-import { engineeringPrinciples } from "@/content/fixtures";
+import type { SiteProfile } from "../../content/model";
 
-export function EngineeringApproach() {
+type EngineeringApproachProps = {
+  principles: SiteProfile["engineeringPrinciples"];
+};
+
+export function EngineeringApproach({ principles }: EngineeringApproachProps) {
   return (
     <section className="section" aria-labelledby="engineering-approach-title">
       <div className="site-container">
@@ -16,7 +20,7 @@ export function EngineeringApproach() {
           </p>
         </div>
         <div className="approach-grid">
-          {engineeringPrinciples.map((principle) => (
+          {principles.map((principle) => (
             <article className="approach-card" key={principle.title}>
               <h3>{principle.title}</h3>
               <p>{principle.description}</p>

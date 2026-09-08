@@ -1,4 +1,8 @@
-export function CurrentBuilding() {
+type CurrentBuildingProps = {
+  currentBuilding: string;
+};
+
+export function CurrentBuilding({ currentBuilding }: CurrentBuildingProps) {
   return (
     <section className="section" aria-labelledby="current-building-title">
       <div className="site-container split-grid">
@@ -10,9 +14,7 @@ export function CurrentBuilding() {
         </div>
         <div className="info-panel">
           <h3>Reviewable slices, not speculative infrastructure.</h3>
-          <p>
-            This portfolio starts with the server-rendered public shell. Editorial persistence, owner tooling, managed media, and 3D remain later slices until their boundaries are explicitly authorized.
-          </p>
+          <p>{currentBuilding}</p>
         </div>
       </div>
     </section>
