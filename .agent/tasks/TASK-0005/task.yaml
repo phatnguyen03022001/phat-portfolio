@@ -1,0 +1,202 @@
+protocol_version: 3
+
+task_id: TASK-0005
+task_revision: 1
+state: APPROVED
+
+origin:
+  type: user_request
+  task_id: ""
+  gap_id: PORTFOLIO-V1-WORK-EDITORIAL-PUBLISHING
+
+architect_binding:
+  target_repository: phatnguyen03022001/phat-portfolio
+
+target:
+  repository: phatnguyen03022001/phat-portfolio
+  branch:
+    name: dev
+    role: primary-development
+
+execution_base:
+  mode: handoff_snapshot
+  capture: after_final_planning_commit
+  require_exact_match: true
+
+skill_library:
+  repository: phatnguyen03022001/agent-skills
+  revision: "1826d33bd1e467896c133109b37db8b0656b3276"
+
+architect_analysis_skills:
+  - architect
+  - simplicity
+
+execution_skills:
+  required:
+    - executor
+    - verification
+    - github-workflow
+  recommended:
+    - simplicity
+
+external_skills:
+  architect_analysis: []
+  execution_required: []
+  execution_recommended:
+    - superpowers/executing-plans
+    - superpowers/test-driven-development
+    - superpowers/systematic-debugging
+    - superpowers/verification-before-completion
+
+authority_sources:
+  - source: "phatnguyen03022001/phat-portfolio@b371677219319783a2eb4d302ba813d15ab37038:docs/superpowers/specs/2026-09-08-personal-engineering-portfolio-design.md"
+    role: "Approved V1 editorial model, owner authorization, publication semantics, public isolation and staged-scope authority."
+    precedence: 1
+  - source: "phatnguyen03022001/phat-portfolio@b371677219319783a2eb4d302ba813d15ab37038:docs/superpowers/plans/2026-09-08-work-editorial-publishing.md"
+    role: "Approved WorkItem draft/edit/publish lifecycle and verification decomposition."
+    precedence: 2
+  - source: "phatnguyen03022001/phat-portfolio@97abd3e66ffe32d0983a320a6cc4a75979261ae8:.agent/tasks/TASK-0004/review.yaml"
+    role: "Accepted immutable-owner Better Auth security boundary and protected read-only admin shell."
+    precedence: 3
+
+structure_authority:
+  status: RESOLVED
+  source: "Approved portfolio design plus work-editorial-publishing plan at b371677219319783a2eb4d302ba813d15ab37038"
+  rationale: "Extend the existing WorkItem content owner and protected admin work surface only. Add no new first-class collection, API service, revision store, CMS framework or provider layer."
+
+objective: "Give the authenticated owner a bounded WorkItem draft/create/edit/publish/unpublish workflow while preserving immutable slugs, published-only anonymous reads, the accepted owner-security boundary and strict deferral of destructive/future infrastructure."
+
+scope:
+  required_changes:
+    - "Fresh-bind TASK-0005 revision 1 at the exact canonical handoff base on dev and prove current repository/branch/base/main/topology plus required EXECUTION capabilities before mutation."
+    - "Implement the approved work-editorial-publishing plan without adding a runtime dependency."
+    - "Create WorkItems only as DRAFT with publishedAt=null; reject duplicate slugs without overwriting existing data; slug is immutable after creation."
+    - "Allow content mutation only while the persisted WorkItem is DRAFT. A PUBLISHED WorkItem must reject content edits until explicitly unpublished."
+    - "Publish only an existing validated DRAFT and set publicationStatus=PUBLISHED with publishedAt equal to the mutation time; unpublish only an existing validated PUBLISHED item and set publicationStatus=DRAFT with publishedAt=null."
+    - "Every persistent mutation must cross the accepted TASK-0004 live owner session plus immutable linked-GitHub-account authorization boundary before changing Mongo state. Cookie presence or authentication alone is insufficient."
+    - "Use the existing direct official MongoDB driver owner and existing WorkItem schema/enums/limits. Final documents must pass workItemSchema before persistence. No ODM, generic repository/service framework or second work collection."
+    - "Add protected admin work screens for list, new draft and existing item editing. Published items are read-only except explicit unpublish; drafts expose bounded editing and explicit publish. No delete operation exists."
+    - "Support the existing WorkItem editorial surfaces needed by current case studies: core metadata, repository references, case-study sections, evidence records, technologies and external links. Preserve constrained Markdown and evidence-state semantics without synthetic scores/claims."
+    - "Keep SiteProfile/profile admin and Media admin read-only in this task. Do not pull Cloudinary/MediaAsset or GitHub import forward."
+    - "Use native server-side mutation handling and bounded validation errors; do not expose auth/session/provider/Mongo secrets or raw database errors to browser output."
+    - "Use TDD plus real ephemeral Mongo evidence for duplicate-slug, draft edit, published-edit rejection, publish visibility, unpublish visibility, missing/malformed fail-closed and owner authorization predicates."
+    - "Run lint, typecheck, tests, production build, repository verify and git diff --check; truthfully record the actual Node version and preserve engines.node=24.x."
+    - "Run production/server smoke with ephemeral Mongo and synthetic TASK-0004 auth configuration proving published public visibility, draft public absence, anonymous mutation rejection and the complete owner-authorized draft/edit/publish/unpublish lifecycle."
+    - "Agent Runtime, secure tunnel, parent execution transport and shared operator infrastructure are never task-owned. Cleanup only positively identified task-owned processes/resources; never kill/restart/reconfigure shared infrastructure."
+    - "Publish one coherent implementation candidate as direct child of exact base, then one report-only direct child; push non-force to dev, fresh-prove remote/local/main/topology and stop NEEDS_REVIEW."
+  allowed_existing_files_or_components:
+    - src/content/
+    - src/app/admin/(protected)/work/
+    - src/components/admin/
+    - src/app/globals.css
+    - README.md
+    - .agent/tasks/TASK-0005/report.yaml
+  expected_files_are_restrictive: true
+
+invariants:
+  - "dev is the only implementation branch; main remains unchanged."
+  - "WorkItem remains the sole work/project/system model and MongoDB official driver remains the persistence mechanism."
+  - "New records are DRAFT only; published records cannot be content-edited directly; slug cannot change after creation; deletion is absent."
+  - "Every mutation is owner-authorized through the accepted TASK-0004 live session plus immutable linked-account check."
+  - "Anonymous public queries remain PUBLISHED-only at the Mongo boundary."
+  - "SiteProfile mutation, media, GitHub import, contact backend, analytics and 3D remain deferred."
+  - "Agent Runtime/tunnel/parent/shared operator infrastructure are never task-owned cleanup targets."
+
+forbidden_changes:
+  - "Do not modify main, create/delete/rename branches, force-push, promote, tag, release or deploy production."
+  - "Do not change TASK-0004 authentication/authorization semantics or weaken CSRF/origin/session protections."
+  - "Do not add delete, bulk destructive mutation, slug rename/redirect history, autosave, revisions/version tables, scheduled publishing, collaboration, approval roles, RBAC, organizations or another auth/data framework."
+  - "Do not add SiteProfile mutation, Cloudinary/MediaAsset persistence, uploads, GitHub import, email/contact providers, analytics, 3D/video, Redis, queues, event buses, microservices, separate backend, CMS/page-builder or theme subsystem."
+  - "Do not expose sensitive auth/provider/session/Mongo values in browser code, committed content, logs or report prose."
+  - "Do not terminate/restart/signal/reconfigure Agent Runtime, secure tunnel, parent transport or unrelated operator processes."
+  - "Do not modify the approved spec, accepted prior-task evidence or this task during execution. Material security/schema/public-contract/dependency changes require revised Architect authority."
+
+gap_policy:
+  local_auto_fix: true
+  scope_expansion: forbidden
+  architecture_change: forbidden
+  spec_change: forbidden
+  dependency_change: revised_contract_required
+  public_contract_change: revised_contract_required
+  blocking_gap_behavior: BLOCKED
+
+continuation_policy:
+  mode: MANUAL
+  stop_conditions:
+    - BLOCKED
+    - STALE_STATE
+    - AUTHORITY_REQUIRED
+    - CURRENT_PHASE_CAPABILITY_UNAVAILABLE
+    - REVIEW_REQUIRED
+    - REVERIFY_REQUIRED
+    - USER_STOP
+
+acceptance_criteria:
+  - id: AC-1
+    requirement: "WorkItem mutation lifecycle is bounded, schema-valid and non-destructive."
+    evidence_required: "Source plus real-Mongo tests prove DRAFT-only create, duplicate rejection, immutable slug, draft-only content edit, explicit publish/unpublish timestamps and no delete/revision subsystem."
+  - id: AC-2
+    requirement: "Every persistent editorial mutation is protected by the accepted immutable-owner authorization boundary."
+    evidence_required: "Source/tests prove create/update/publish/unpublish all require the TASK-0004 live session plus linked immutable GitHub owner account before Mongo mutation; anonymous/wrong-owner paths leave data unchanged."
+  - id: AC-3
+    requirement: "The protected admin work UI exposes the lifecycle honestly without pulling future infrastructure forward."
+    evidence_required: "Admin route/component evidence proves list/new/edit screens; published content is read-only except unpublish; draft content is editable/publishable; slug is create-only; SiteProfile/media remain read-only; no delete/future-slice UI exists."
+  - id: AC-4
+    requirement: "Publishing state remains the single public visibility boundary."
+    evidence_required: "Real-Mongo and production-route evidence proves DRAFT is absent/404 publicly, publish makes the item visible through existing public queries/routes, unpublish removes it again, and public reads still filter PUBLISHED at Mongo boundary."
+  - id: AC-5
+    requirement: "Verification is deterministic, server-first and secret-safe."
+    evidence_required: "lint, typecheck, tests, build, verify and diff-check pass; actual Node version is recorded; ephemeral-Mongo lifecycle tests and server smoke pass; browser/static/source scans show no sensitive leakage, client data cache or unauthorized service/dependency expansion."
+  - id: AC-6
+    requirement: "Execution cleanup respects process/resource ownership."
+    evidence_required: "Only positively identified task-owned resources are cleaned; Agent Runtime/tunnel/parent/shared processes are never signaled, killed, restarted or reconfigured."
+  - id: AC-7
+    requirement: "Publication remains bounded to dev and independently reviewable."
+    evidence_required: "Candidate is direct child of exact base; report is report-only direct child; both pushed non-force to dev; main remains 4f6f466ed3153c48c29e53d1bd23ffce289097e3; topology remains dev/main; Executor stops NEEDS_REVIEW."
+
+verification:
+  authoritative_verification:
+    required: false
+    rationale: "This is an owner-only editorial mutation boundary but not an auth redesign, migration, external-provider write or production deployment. Adversarial owner-gate tests, real-Mongo lifecycle proof, production-route smoke, exact diff inspection and independent Architect review are sufficient."
+  required_checks:
+    - "pnpm lint"
+    - "pnpm typecheck"
+    - "pnpm test"
+    - "pnpm build"
+    - "pnpm verify"
+    - "git diff --check"
+    - "Real-Mongo WorkItem draft/edit/publish/unpublish lifecycle tests"
+    - "Owner-authorization negative mutation tests"
+    - "Production/server smoke for public draft/published isolation and owner lifecycle"
+    - "Browser/static secret-leak and exact forbidden-diff inspection"
+    - "Task-owned process/resource cleanup proof"
+
+capability_requirements:
+  EXECUTION:
+    required:
+      - repository_content_read
+      - repository_content_write
+      - native_repository_execution
+      - git_history_read
+      - git_commit
+      - git_push
+      - remote_ref_read
+  REVIEW:
+    required:
+      - repository_content_read
+      - repository_content_write
+      - git_history_read
+      - git_commit
+      - git_push
+      - remote_ref_read
+
+git_authority:
+  commit: true
+  push: true
+  create_branch: false
+  promote: false
+  force_push: false
+  tag: false
+  release: false
+
+execution_ready: true
