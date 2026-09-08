@@ -1,0 +1,47 @@
+protocol_version: 3
+
+task_id: TASK-0004
+task_revision: 1
+review_revision: 1
+state: ACCEPTED
+
+reviewed_report:
+  repository: phatnguyen03022001/phat-portfolio
+  path: .agent/tasks/TASK-0004/report.yaml
+  commit: "25d05b1f7aeeeb0baad629e92817ceb8b1667b50"
+  report_revision: 1
+
+contract_compliance:
+  protocol_version: PASS
+  identity: PASS
+  execution_base: PASS
+  skill_rules: PASS
+  scope: PASS
+  structure_policy: PASS
+  git_authority: PASS
+  acceptance_criteria: PASS
+  verifier_evidence: NOT_REQUIRED
+
+acceptance_basis:
+  - "Fresh Architect review resolved TASK-0004 revision 1 at exact base dea454c5221839b864333add51a35a144e187445, implementation candidate d647d310979d82149eb91e443e1df552c3ab1ece, and reviewed report 25d05b1f7aeeeb0baad629e92817ceb8b1667b50. Candidate is exactly one commit ahead of the base; report is exactly one commit ahead of the candidate and contains only .agent/tasks/TASK-0004/report.yaml."
+  - "Exact candidate diff is bounded to the authorized owner-auth/admin-shell slice: Better Auth 1.7.3 plus the official Mongo adapter, centralized Mongo handle reuse, auth configuration/policy/server/client modules, one Better Auth route, the anonymous sign-in surface, the protected read-only admin shell, focused tests/docs/styles, and no later-slice infrastructure."
+  - "Source inspection confirms OAuth admission is scoped to provider=github and compares the raw provider profile id to the configured immutable owner id; protected authorization independently requires a live Better Auth session plus a linked account whose providerId, provider-side accountId, and Better Auth userId match the configured owner/session tuple. Mutable login, email, name, avatar, cookie presence, and authentication alone do not authorize."
+  - "Better Auth initialization is lazy, reuses the existing official-driver MongoClient/Db owner, disables account linking, exposes GitHub as the only social provider, preserves default origin/CSRF protections, and keeps browser code limited to the generic Better Auth client/sign-in/sign-out interaction. Synthetic repository placeholders do not disclose the actual owner/provider credentials."
+  - "Executor evidence reports Node v24.19.0 with engines.node=24.x; lint, typecheck, 51 tests, build, verify and git diff --check PASS; real ephemeral-Mongo Better Auth integration and adversarial owner-policy tests PASS; production smoke proves anonymous sign-in, redirects for all four protected admin routes, mounted auth session endpoint, unaffected public routes, and no synthetic secret sentinel leakage. No live GitHub OAuth callback is claimed because no authorized real provider environment was used."
+  - "Fresh post-publication GitHub proof resolved dev=25d05b1f7aeeeb0baad629e92817ceb8b1667b50, main=4f6f466ed3153c48c29e53d1bd23ffce289097e3, and repository topology exactly dev/main."
+
+gap_disposition:
+  retained_task_worktree:
+    disposition: ACCEPTED_WITH_FOLLOW_UP
+    reason: "A disposable TASK-0004 local worktree was retained after a safety gate blocked deletion. This is LOCAL_MUTABLE hygiene and does not alter canonical GitHub truth or the accepted security/product boundary. Future cleanup may remove it only after exact ownership, containment and safe-deletion capability are positively re-proven; unsafe cleanup remains forbidden."
+  live_github_oauth_activation:
+    disposition: ACCEPTED_WITH_FOLLOW_UP
+    reason: "Local/synthetic verification intentionally does not prove a real GitHub OAuth callback. Live-provider callback and production environment configuration remain activation evidence for the later production-activation slice."
+
+promotion_readiness:
+  eligible_for_candidate_capture: false
+  reason: "TASK-0004 acceptance advances the dev implementation program only. Editorial mutations, media, GitHub import, launch hardening and production activation remain pending; no promotion to main is authorized."
+
+notes:
+  - "This review accepts only TASK-0004 revision 1. It does not authorize editorial mutation/publish workflows, Cloudinary/media persistence, GitHub import, release, production deployment, or V2 3D work."
+  - "The current Architect review procedure was resolved from architect-profile/dev 508c64f02640911f1fdca81c8cde08748921eae7 selecting agent-skills 1826d33bd1e467896c133109b37db8b0656b3276. TASK-0004 execution itself remains judged against its pinned execution skill revision 3c4a31598da4c4e12cb0925bee1b471f160d3b4e."
