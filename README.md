@@ -14,11 +14,11 @@ Repository policy:
 - `main` is the stable branch.
 - GitHub is canonical for application code and repository authority.
 - MongoDB is the runtime editorial source for the current public portfolio slice.
-- Owner authentication and the read-only admin shell are part of the current V1 slice. Admin editing, managed media, GitHub import, contact forms, analytics, and 3D remain later authorized slices.
+- Owner authentication and bounded WorkItem draft/edit/publish tooling are part of the current V1 slice. SiteProfile and media administration remain read-only; managed media, GitHub import, contact forms, analytics, and 3D remain later authorized slices.
 
 ## Current V1 status
 
-The current implementation is a server-rendered Next.js portfolio with MongoDB-backed editorial reads for `SiteProfile` and published `WorkItem` content. Bootstrap data seeds the approved identity and the two current evidence-backed work candidates only; it is migration input, not a runtime fallback.
+The current implementation is a server-rendered Next.js portfolio with MongoDB-backed editorial reads for `SiteProfile` and published `WorkItem` content. The owner-only `/admin/work` surface can create drafts, edit drafts, publish, and unpublish through the accepted Better Auth owner gate. Published WorkItems are read-only until explicitly unpublished; slug mutation and deletion are intentionally absent. Bootstrap data seeds the approved identity and the two current evidence-backed work candidates only; it is migration input, not a runtime fallback.
 
 ## Runtime environment
 
