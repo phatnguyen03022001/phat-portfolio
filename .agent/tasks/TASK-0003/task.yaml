@@ -1,0 +1,208 @@
+protocol_version: 3
+
+task_id: TASK-0003
+task_revision: 1
+state: APPROVED
+
+origin:
+  type: user_request
+  task_id: ""
+  gap_id: PORTFOLIO-V1-ENGINEERING-DOSSIER
+
+architect_binding:
+  target_repository: phatnguyen03022001/phat-portfolio
+
+target:
+  repository: phatnguyen03022001/phat-portfolio
+  branch:
+    name: dev
+    role: primary-development
+
+execution_base:
+  mode: handoff_snapshot
+  capture: after_final_planning_commit
+  require_exact_match: true
+
+skill_library:
+  repository: phatnguyen03022001/agent-skills
+  revision: "3c4a31598da4c4e12cb0925bee1b471f160d3b4e"
+
+architect_analysis_skills:
+  - architect
+  - simplicity
+
+execution_skills:
+  required:
+    - executor
+    - verification
+    - github-workflow
+  recommended:
+    - simplicity
+
+external_skills:
+  architect_analysis: []
+  execution_required: []
+  execution_recommended:
+    - superpowers/executing-plans
+    - superpowers/test-driven-development
+    - superpowers/verification-before-completion
+
+authority_sources:
+  - source: "phatnguyen03022001/phat-portfolio@eba4529f066fbae0758eced7d0bbc24dc58e4d37:docs/superpowers/specs/2026-09-08-personal-engineering-portfolio-design.md"
+    role: "Approved product, case-study, evidence, rich-content, accessibility, public-IA and staged-scope authority."
+    precedence: 1
+  - source: "phatnguyen03022001/phat-portfolio@eba4529f066fbae0758eced7d0bbc24dc58e4d37:docs/superpowers/plans/2026-09-08-engineering-dossier.md"
+    role: "Approved implementation decomposition for the engineering dossier and public case-study slice."
+    precedence: 2
+  - source: "phatnguyen03022001/phat-portfolio@aba4be7d30ab5d6b7a34a05591fc3a6326e71113:.agent/tasks/TASK-0002/review.yaml"
+    role: "Accepted Mongo-backed editorial persistence/public-read baseline."
+    precedence: 3
+
+structure_authority:
+  status: RESOLVED
+  source: "Approved portfolio design plus engineering-dossier plan at eba4529f066fbae0758eced7d0bbc24dc58e4d37"
+  rationale: "Keep the existing shallow Next.js/Mongo ownership model. Add only one published-by-slug query, one case-study policy module, one constrained Markdown component, one focused case-study composition, the /work/[slug] route, tests, and bounded updates to existing work presentation/bootstrap data. No new collection, service layer, renderer registry, CMS block system, or future-slice directories are justified."
+
+objective: "Turn the accepted Mongo-backed work index into evidence-oriented public engineering case studies with published-only slug isolation, constrained Markdown, system-owned section ordering, explicit evidence-state presentation, and no fabricated outcomes or premature owner/media/integration infrastructure."
+
+scope:
+  required_changes:
+    - "Fresh-bind TASK-0003 revision 1 at the exact handoff base on dev before mutation. Prove repository identity, branch dev, exact base HEAD, remote main unchanged, dev/main-only topology, and all required EXECUTION capabilities."
+    - "Add current stable compatible react-markdown as the only new runtime dependency. Do not add rehype-raw, MDX, another Markdown parser, a CMS/page-builder framework, or unrelated UI dependencies."
+    - "Add src/content/case-study.ts owning exactly the approved case-section ordering and an explicit Markdown URL policy. Allow relative/hash links plus http, https, and mailto; javascript, data, file, vbscript and other unapproved schemes must not become active links."
+    - "Tighten structured URL validation in the existing Zod model: repository references accept HTTP(S) only; general external/contact links accept only the explicitly approved safe schemes required by current content. Preserve current valid bootstrap data."
+    - "Add a server-renderable MarkdownContent component using react-markdown. Raw HTML/scripts/iframes/inline handlers must not execute; do not enable rehype-raw or arbitrary component/MDX execution. The renderer must support the basic approved CommonMark surfaces: prose, headings, lists, emphasis, links, inline/fenced code and blockquotes."
+    - "Add getPublishedWorkBySlug(slug) to the existing Mongo query boundary. The Mongo predicate must include publicationStatus=PUBLISHED and the persisted result must pass workItemSchema parsing. Draft, missing and malformed behavior must fail closed as specified by the plan."
+    - "Enrich only the two existing bootstrap WorkItem records with the narrow approved OVERVIEW and KNOWN_LIMITATIONS sections defined verbatim in the engineering-dossier plan. Do not add responsibility, outcome, operations, metrics, users, customers, revenue, deployment, production-operation or performance claims. Evidence arrays may remain empty until independently supported records are available."
+    - "Add a focused WorkCaseStudy public composition rendering work identity/category/summary, structured repository references, canonically ordered sections through MarkdownContent, explicit evidence states when records exist, technologies/external links when present, and an honest empty evidence state when no evidence records are published. Never generate synthetic scores, maturity percentages or readiness ratings."
+    - "Add /work/[slug] as an async Server Component using the published-by-slug query and notFound() for non-public/missing records. Keep request-time rendering so build remains independent of a live Mongo endpoint. Add truthful per-case metadata from the work title/summary without claiming deployment/operation status."
+    - "Update /work and selected-work presentation so published cards link with normal Next.js links to /work/<slug>. Preserve the accepted public visual hierarchy and server-first behavior."
+    - "Use existing global CSS patterns; modify src/app/globals.css only for focused case-study/readability styles that are actually used. Do not create a design-system package, theme subsystem, animation framework, or client interaction layer."
+    - "Write TDD-backed tests for canonical section ordering, safe Markdown URL behavior, raw-HTML/unsafe-link non-execution, structured URL validation, server-rendered case-study behavior, and real-Mongo published/draft/missing/malformed slug isolation. Use the existing Vitest/mongodb-memory-server-core stack; do not add another test runner or browser framework in this slice."
+    - "Run pnpm lint, pnpm typecheck, pnpm test, pnpm build and pnpm verify. Record the actual local Node version truthfully; preserve package engines.node=24.x and do not claim exact Node-24 execution unless the checks actually run on Node 24.x."
+    - "Run production-server smoke against seeded ephemeral Mongo and prove /work plus both approved published case slugs return 200, a synthetic draft slug returns 404, a missing slug returns 404, no runtime error marker appears, and rendered content contains no active unsafe Markdown/raw-HTML execution surface."
+    - "Inspect the exact implementation candidate diff and prove there is no Better Auth/admin UI/Cloudinary/MediaAsset persistence/GitHub API integration/contact backend/analytics/Three.js/3D/video/Redis/queue/event-bus/microservice/separate-backend/client-fetching/theme subsystem/main mutation or unrelated refactor."
+    - "Commit the coherent implementation candidate as the direct child of the exact handoff base, push non-force to dev, create the canonical TASK-0003 report as the report-only direct child, push non-force, fresh-prove final remote/local/main/topology state, and stop NEEDS_REVIEW."
+  allowed_existing_files_or_components:
+    - package.json
+    - pnpm-lock.yaml
+    - src/content/model.ts
+    - src/content/model.test.ts
+    - src/content/queries.ts
+    - src/content/queries.integration.test.ts
+    - src/content/bootstrap-data.ts
+    - src/content/case-study.ts
+    - src/content/case-study.test.ts
+    - src/components/public/markdown-content.tsx
+    - src/components/public/work-case-study.tsx
+    - src/components/public/selected-work.tsx
+    - src/app/work/page.tsx
+    - src/app/work/[slug]/page.tsx
+    - src/app/globals.css
+    - .agent/tasks/TASK-0003/report.yaml
+  expected_files_are_restrictive: true
+
+invariants:
+  - "dev is the only implementation branch for this task; main remains stable and unchanged."
+  - "WorkItem remains the sole work/project/system content model; no new first-class portfolio collection is introduced."
+  - "Public detail lookup enforces publicationStatus=PUBLISHED at the Mongo boundary; draft case studies are never anonymously visible."
+  - "Case-study section ordering is system-owned and uses only the approved section-kind enum."
+  - "Markdown is constrained content, not an executable extension system. Raw HTML, unsafe schemes, MDX imports and arbitrary components remain disabled."
+  - "Evidence states remain distinct and are never converted into a percentage, maturity score or synthetic readiness rating."
+  - "Only the two approved current flagship candidates receive bootstrap case content, and only the bounded claims explicitly authorized by the plan are added."
+  - "Public pages remain Server Components by default and content remains usable without client JavaScript/WebGL."
+  - "The accepted TASK-0002 Mongo boundary remains direct official-driver persistence with no ODM/service abstraction."
+  - "No support repository mutation is authorized."
+
+forbidden_changes:
+  - "Do not modify main, create/delete/rename branches, force-push, promote, tag, release or deploy production."
+  - "Do not add Better Auth, authentication, owner/admin routes, organizations, RBAC, Cloudinary, MediaAsset persistence, GitHub API integration, email/contact providers, analytics, Three.js, React Three Fiber, GLB assets, video tooling, Redis, queues, event buses, microservices, a separate backend API, CMS framework, page builder, generic renderer/provider registry, or Docker orchestration."
+  - "Do not add rehype-raw, MDX, arbitrary Markdown components, raw HTML execution, unsafe URL schemes, public client-side data fetching, SWR, React Query, or a use-client boundary for dossier rendering."
+  - "Do not add a theme provider, persisted theme state, theme toggle, animation framework, or design-system package."
+  - "Do not invent responsibility, outcomes, customers, revenue, users, metrics, seniority, deployment, production-operation, performance gains or commercial flagship proof."
+  - "Do not modify the approved design spec, TASK-0001/TASK-0002 evidence, or this task during execution. Material architecture/spec changes require revised Architect authority."
+
+gap_policy:
+  local_auto_fix: true
+  scope_expansion: forbidden
+  architecture_change: forbidden
+  spec_change: forbidden
+  dependency_change: revised_contract_required
+  public_contract_change: revised_contract_required
+  blocking_gap_behavior: BLOCKED
+
+continuation_policy:
+  mode: MANUAL
+  stop_conditions:
+    - BLOCKED
+    - STALE_STATE
+    - AUTHORITY_REQUIRED
+    - CURRENT_PHASE_CAPABILITY_UNAVAILABLE
+    - REVIEW_REQUIRED
+    - REVERIFY_REQUIRED
+    - USER_STOP
+
+acceptance_criteria:
+  - id: AC-1
+    requirement: "Case-study Markdown is constrained, server-renderable, and non-executable outside the approved content grammar."
+    evidence_required: "Exact dependency/source/tests prove react-markdown is the only new runtime rendering dependency; raw HTML/scripts/iframes do not execute; unsafe schemes do not become active href values; approved CommonMark surfaces render; no rehype-raw/MDX/arbitrary component execution or Client Component is introduced."
+  - id: AC-2
+    requirement: "Public work-detail lookup is Mongo-backed, runtime-validated, deterministic and draft-safe."
+    evidence_required: "Real-Mongo integration tests prove published slug returns validated WorkItem, draft and missing slugs return null/not-found, malformed published content fails closed, and the Mongo predicate includes publicationStatus=PUBLISHED."
+  - id: AC-3
+    requirement: "The public dossier presents engineering evidence honestly using the existing WorkItem model."
+    evidence_required: "WorkCaseStudy renders structured repository references, canonically ordered approved sections, explicit evidence-state labels when records exist, honest empty-evidence behavior when none exist, and no synthetic score/readiness UI or new Project/System/content collection."
+  - id: AC-4
+    requirement: "The two current flagship case studies become navigable without fabricated proof or later-slice infrastructure."
+    evidence_required: "/work links to both approved case slugs; seeded production smoke returns 200 for both published cases and 404 for draft/missing cases; bootstrap enrichment contains only the exact bounded OVERVIEW/KNOWN_LIMITATIONS content authorized by the plan; no unsupported outcome/responsibility/operation claims or auth/admin/media/GitHub/contact-backend/analytics/3D infrastructure appears."
+  - id: AC-5
+    requirement: "The dossier slice remains maintainable, server-first, accessible by construction, and deterministically verifiable."
+    evidence_required: "pnpm lint, typecheck, test, build and verify pass; production smoke passes against ephemeral seeded Mongo; source scan shows no use-client/client fetching; focused semantic headings/links are rendered; exact diff is bounded and git diff --check passes."
+  - id: AC-6
+    requirement: "Publication remains bounded to dev and independently reviewable."
+    evidence_required: "Implementation candidate is the direct child of exact handoff base; canonical report is the report-only direct child; both are pushed non-force to dev; remote main remains 4f6f466ed3153c48c29e53d1bd23ffce289097e3; repository topology remains exactly dev/main; Executor stops NEEDS_REVIEW."
+
+verification:
+  authoritative_verification:
+    required: false
+    rationale: "This slice adds public rendering and a content-safety boundary but no privileged mutation, external provider write, or production deployment. Focused unit/server-render tests, official-driver real-Mongo integration, production-route smoke, exact diff/ref proof and dependency inspection are sufficient."
+  required_checks:
+    - "pnpm lint"
+    - "pnpm typecheck"
+    - "pnpm test"
+    - "pnpm build"
+    - "pnpm verify"
+    - "Real-Mongo integration tests through mongodb-memory-server-core for published/draft/missing/malformed slug behavior"
+    - "Server-render Markdown safety tests for raw HTML and unsafe URL schemes"
+    - "Production next start smoke for /work, both approved case slugs, synthetic draft 404 and missing 404 against seeded ephemeral Mongo"
+    - "Exact diff/dependency/client-boundary inspection plus git diff --check"
+
+capability_requirements:
+  EXECUTION:
+    required:
+      - repository_content_read
+      - repository_content_write
+      - native_repository_execution
+      - git_history_read
+      - git_commit
+      - git_push
+      - remote_ref_read
+  REVIEW:
+    required:
+      - repository_content_read
+      - repository_content_write
+      - git_history_read
+      - git_commit
+      - git_push
+      - remote_ref_read
+
+git_authority:
+  commit: true
+  push: true
+  create_branch: false
+  promote: false
+  force_push: false
+  tag: false
+  release: false
+
+execution_ready: true
