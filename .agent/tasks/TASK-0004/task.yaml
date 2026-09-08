@@ -68,7 +68,7 @@ objective: "Establish one owner-only Better Auth + GitHub OAuth security boundar
 
 scope:
   required_changes:
-    - "Fresh-bind TASK-0004 revision 1 at exact base f862a47e83a19f2622f6071c9b0fbd258bd2f72d on dev; prove repository/branch/base, unchanged main, dev/main-only topology and required EXECUTION capabilities before mutation."
+    - "Fresh-bind TASK-0004 revision 1 at the exact canonical handoff base on dev; prove repository/branch/base, unchanged main, dev/main-only topology and required EXECUTION capabilities before mutation."
     - "Implement the owner-auth/admin-shell plan exactly within its approved dependency, runtime configuration, file-ownership and build-independence boundaries."
     - "Add Better Auth 1.7.3 and its official Mongo adapter 1.7.3 only. Reuse the existing centralized MongoClient/Db ownership; do not create another database/session service or ODM."
     - "GitHub is the only sign-in method. Account linking, email/password, generic registration, organizations, memberships, RBAC and unrelated auth plugins remain absent."
