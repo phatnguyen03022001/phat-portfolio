@@ -14,7 +14,7 @@ Repository policy:
 - `main` is the stable branch.
 - GitHub is canonical for application code and repository authority.
 - MongoDB is the runtime editorial source for the current public portfolio slice.
-- Owner authentication, admin editing, managed media, GitHub import, contact forms, analytics, and 3D remain later authorized slices.
+- Owner authentication and the read-only admin shell are part of the current V1 slice. Admin editing, managed media, GitHub import, contact forms, analytics, and 3D remain later authorized slices.
 
 ## Current V1 status
 
@@ -26,9 +26,14 @@ Create a local environment file outside version control with:
 
 ```bash
 MONGODB_URI=mongodb://127.0.0.1:27017/phat_portfolio
+BETTER_AUTH_SECRET=<at-least-32-character-secret>
+BETTER_AUTH_URL=http://localhost:3000
+GITHUB_CLIENT_ID=<github-oauth-client-id>
+GITHUB_CLIENT_SECRET=<github-oauth-client-secret>
+GITHUB_OWNER_ID=<immutable-github-account-id>
 ```
 
-`MONGODB_URI` is required at request time for public editorial pages and for the bootstrap command. Secrets must stay outside committed files.
+`MONGODB_URI` is required at request time for public editorial pages, auth persistence, and the bootstrap command. Better Auth also requires the five auth variables above at auth request time. Configure the GitHub OAuth callback as `/api/auth/callback/github`; the GitHub OAuth/App must allow the `user:email` permission used by Better Auth's GitHub flow. Secrets and the real owner account ID must stay outside committed files.
 
 ## Development
 
@@ -58,6 +63,6 @@ pnpm build
 pnpm verify
 ```
 
-`pnpm verify` runs linting, TypeScript checking, integration tests, and the production build. `pnpm build` must remain independent of a live MongoDB endpoint; runtime requests require `MONGODB_URI`.
+`pnpm verify` runs linting, TypeScript checking, integration tests, and the production build. `pnpm build` must remain independent of a live MongoDB endpoint or real auth/provider runtime configuration; runtime requests require the relevant environment values.
 
 Implementation must remain evidence-driven, accessible, maintainable, and intentionally simple.

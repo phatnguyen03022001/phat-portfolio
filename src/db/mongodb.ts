@@ -30,9 +30,13 @@ export async function getMongoClient(): Promise<MongoClient> {
   return mongoClientPromise;
 }
 
-export async function getDatabase(): Promise<Db> {
+export async function getMongoHandles(): Promise<{ client: MongoClient; db: Db }> {
   const client = await getMongoClient();
-  return client.db();
+  return { client, db: client.db() };
+}
+
+export async function getDatabase(): Promise<Db> {
+  return (await getMongoHandles()).db;
 }
 
 export async function closeMongoClientForTests(): Promise<void> {
