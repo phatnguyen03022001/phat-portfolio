@@ -1,0 +1,199 @@
+protocol_version: 3
+
+task_id: TASK-0001
+task_revision: 1
+state: APPROVED
+
+origin:
+  type: user_request
+  task_id: ""
+  gap_id: PORTFOLIO-V1-PUBLIC-FOUNDATION
+
+architect_binding:
+  target_repository: phatnguyen03022001/phat-portfolio
+
+target:
+  repository: phatnguyen03022001/phat-portfolio
+  branch:
+    name: dev
+    role: primary-development
+
+execution_base:
+  mode: handoff_snapshot
+  capture: after_final_planning_commit
+  require_exact_match: true
+
+skill_library:
+  repository: phatnguyen03022001/agent-skills
+  revision: "3c4a31598da4c4e12cb0925bee1b471f160d3b4e"
+
+architect_analysis_skills:
+  - architect
+  - simplicity
+
+execution_skills:
+  required:
+    - executor
+    - verification
+    - github-workflow
+  recommended:
+    - simplicity
+
+external_skills:
+  architect_analysis: []
+  execution_required: []
+  execution_recommended: []
+
+authority_sources:
+  - source: "phatnguyen03022001/phat-portfolio@1a647cca1837322eaa3aedd284c69a10421b60d5:docs/superpowers/specs/2026-09-08-personal-engineering-portfolio-design.md"
+    role: "Approved product, architecture, content, visual, security, performance, media, 3D, deployment and scope authority."
+    precedence: 1
+  - source: "phatnguyen03022001/phat-portfolio@1a647cca1837322eaa3aedd284c69a10421b60d5:docs/superpowers/plans/2026-09-08-public-foundation.md"
+    role: "Approved implementation decomposition for the first public-foundation slice."
+    precedence: 2
+  - source: "phatnguyen03022001/architect-profile@main:ARCHITECT_PROFILE.md"
+    role: "Operator priorities and working preferences only; target product authority remains in this repository."
+    precedence: 3
+
+structure_authority:
+  status: RESOLVED
+  source: "Approved portfolio design and public-foundation plan at 1a647cca1837322eaa3aedd284c69a10421b60d5"
+  rationale: "V1 uses one shallow Next.js application with route ownership in src/app, public compositions in src/components/public, generated shadcn primitives in src/components/ui, and temporary bounded fixture content in src/content. Do not create future Mongo/auth/media/3D directories until those slices are authorized."
+
+objective: "Create the first deployable public foundation for phat.picmao.com: a clean editorial Next.js portfolio shell with shadcn/ui primitives, project-owned global CSS, honest temporary content/media treatment, accessible responsive public routes, and no premature data/auth/media-provider/3D infrastructure."
+
+scope:
+  required_changes:
+    - "Fresh-bind TASK-0001 revision 1 at the exact handoff base on dev before mutation. Prove the local repository is exactly phatnguyen03022001/phat-portfolio, branch is dev, HEAD matches the exact handoff base, working tree is clean, and remote main remains unchanged before implementation."
+    - "Scaffold one root Next.js App Router application using pnpm, TypeScript, src/, Tailwind CSS, ESLint and @/* imports. Use Node.js 24.x LTS. Resolve the current patched Next.js 16.x Active LTS release at execution time, with 16.3.3 as a hard security floor. Preserve all existing README.md, docs/** and .agent/** authority; scaffold through a temporary directory if needed rather than overwriting durable repository files."
+    - "Add package scripts dev, build, start, lint, typecheck and verify, with verify executing lint, typecheck and production build. Declare Node 24.x as the runtime engine contract."
+    - "Initialize current official shadcn/ui against the existing Next.js project and add only the Button primitive because it is immediately used. Accept the current generated dependency/import convention; do not reinstall older helper boilerplate without a concrete compatibility reason."
+    - "Make src/app/globals.css the project-owned visual foundation: neutral editorial palette, strong typography hierarchy, spacing/container tokens, restrained surfaces/borders, one Picmao accent token, visible focus treatment, safe responsive defaults, automatic prefers-color-scheme dark treatment, and prefers-reduced-motion behavior. Do not create a theme provider or theme persistence in this task."
+    - "Create a server-rendered public header/footer and CSS-only temporary PlaceholderVisual. Placeholder media must be clearly decorative and must not contain fake screenshots, terminal logs, metrics, customer evidence or external stock dependencies."
+    - "Implement the public routes /, /work, /about and /contact as Server Components by default. Homepage hierarchy is Hero/identity, Selected Work, Engineering Approach, Current/Building, Evidence Philosophy, About summary and Contact CTA. Header navigation is Home, Work, About, Contact and must not require a client-side mobile drawer for four links."
+    - "Temporary fixture content may contain only approved identity/positioning plus the two current evidence-backed flagship candidates: Knowledge-first IELTS Learning System and Governed Agentic Engineering System. Do not render the commercial/operational flagship as completed work until evidence exists. Do not invent outcomes, users, revenue, clients, metrics, seniority or production operation."
+    - "Use direct contact-link presentation only. Do not add a contact form, API endpoint, mail provider, spam mitigation, rate limiter or inquiry persistence."
+    - "Use shadcn Button only for a real CTA. Do not add unused shadcn primitives or broad UI dependencies for future admin work."
+    - "Set truthful baseline metadata for Nguyen Tien Phat / Software Engineer / AI-native Products & Agentic Systems and intended hostname phat.picmao.com without claiming the production deployment is already live. Full dynamic OG/sitemap/robots hardening remains a later slice unless the scaffold provides a trivial correct baseline."
+    - "Run focused route/runtime smoke checks plus pnpm lint, pnpm typecheck, pnpm build and pnpm verify. Confirm /, /work, /about and /contact return HTTP 200 from the production build and inspect representative narrow/wide layouts for horizontal overflow, obvious focus failures and obvious contrast/readability regressions."
+    - "Inspect the exact candidate diff and prove it contains no MongoDB, Better Auth, Cloudinary, GitHub API integration, contact endpoint, analytics, Three.js, GLB/3D asset generation, video pipeline, generic CMS, extra backend, Redis, queue/event bus, theme subsystem or main-branch mutation."
+    - "Commit the coherent implementation candidate as a direct child of the exact handoff base, push non-force to dev, create the canonical TASK-0001 report as the report-only direct child, push non-force, fresh-prove final remote/local/main/topology state, and stop NEEDS_REVIEW for Governing Architect review."
+  allowed_existing_files_or_components:
+    - README.md
+    - package.json
+    - pnpm-lock.yaml
+    - next.config.ts
+    - tsconfig.json
+    - eslint.config.mjs
+    - postcss.config.mjs
+    - components.json
+    - src/app/
+    - src/components/public/
+    - src/components/ui/
+    - src/lib/
+    - src/content/
+    - .agent/tasks/TASK-0001/report.yaml
+  expected_files_are_restrictive: true
+
+invariants:
+  - "dev is the only implementation branch for this task; main remains stable and unchanged."
+  - "The approved design spec remains product/architecture authority; implementation must not reinterpret the site as a generic full-stack/AI/template portfolio."
+  - "Software Engineer is the durable identity; AI-native Products & Agentic Systems is the current specialization."
+  - "Proof determines credibility; temporary visuals must not manufacture evidence."
+  - "Content remains primary and fully usable without WebGL; V1 contains no Three.js runtime."
+  - "Public pages are Server Components by default. A use-client boundary requires a concrete browser-only behavior and must be called out in the report."
+  - "shadcn/ui is a primitive layer, not the visual identity. globals.css and focused public compositions own the portfolio presentation."
+  - "No routine content-management architecture is implemented in this slice; fixture content is explicitly temporary until the later MongoDB editorial slice."
+  - "No support repository mutation is authorized."
+
+forbidden_changes:
+  - "Do not modify main, create/delete/rename branches, force-push, promote, tag, release or deploy production."
+  - "Do not add MongoDB, Mongoose, Better Auth, Cloudinary, GitHub API integration, email/contact providers, analytics, Three.js, React Three Fiber, GLB assets, shaders, video tooling, Redis, queues, event buses, microservices, a separate backend API, a CMS framework or a generic provider abstraction."
+  - "Do not add a theme provider, persisted theme state or a theme toggle in this task."
+  - "Do not add skill percentage bars, technology-icon clouds, fake terminal surfaces, particle backgrounds, scroll-jacking, loading screens, forced cinematic transitions, game-like navigation or generic purple-blue AI-template styling."
+  - "Do not add unused shadcn components or speculative folders for later slices."
+  - "Do not invent portfolio facts or represent temporary fixture/media content as external proof."
+  - "Do not modify the approved design spec or implementation plan during execution. Architecture/spec changes require revised Architect authority."
+
+gap_policy:
+  local_auto_fix: true
+  scope_expansion: forbidden
+  architecture_change: forbidden
+  spec_change: forbidden
+  dependency_change: revised_contract_required
+  public_contract_change: revised_contract_required
+  blocking_gap_behavior: BLOCKED
+
+continuation_policy:
+  mode: MANUAL
+  stop_conditions:
+    - BLOCKED
+    - STALE_STATE
+    - AUTHORITY_REQUIRED
+    - CURRENT_PHASE_CAPABILITY_UNAVAILABLE
+    - REVIEW_REQUIRED
+    - REVERIFY_REQUIRED
+    - USER_STOP
+
+acceptance_criteria:
+  - id: AC-1
+    requirement: "A current secure Next.js public application foundation exists without overwriting repository authority."
+    evidence_required: "Exact package/lock/config diff shows Node 24.x, pnpm, TypeScript, App Router, src/, Tailwind and Next.js 16.x at or above 16.3.3; README/docs/.agent authority is preserved; pnpm lint, typecheck and build pass."
+  - id: AC-2
+    requirement: "shadcn/ui is present only as a narrow primitive layer while global CSS owns the brand presentation."
+    evidence_required: "components.json plus the immediately used Button primitive exist; globals.css owns the editorial tokens, light/dark system treatment, focus state and reduced-motion behavior; no broad unused primitive set or theme subsystem is introduced."
+  - id: AC-3
+    requirement: "The public information architecture communicates the approved positioning without fabricated proof."
+    evidence_required: "/, /work, /about and /contact render the approved identity and hierarchy; only IELTS and the governed agentic engineering system appear as current evidence-backed flagship candidates; no completed commercial flagship or invented outcomes/metrics appear."
+  - id: AC-4
+    requirement: "The first slice remains server-first and excludes later infrastructure."
+    evidence_required: "Diff inspection proves no MongoDB/Auth/Cloudinary/GitHub import/contact API/analytics/Three.js/3D/video/backend/Redis/queue/event-bus/CMS additions and no unjustified Client Component; any required use-client file has a concrete report rationale."
+  - id: AC-5
+    requirement: "The public shell is reviewably accessible and responsive."
+    evidence_required: "Production route smoke returns 200 for all four public routes; representative narrow/wide inspection shows no horizontal overflow or obvious keyboard focus/contrast/readability regression; reduced-motion CSS exists; pnpm verify passes."
+  - id: AC-6
+    requirement: "Publication is bounded to dev and independently reviewable."
+    evidence_required: "Implementation candidate is the direct child of exact handoff base; canonical report is the report-only direct child; both are pushed non-force to dev; remote main remains 4f6f466ed3153c48c29e53d1bd23ffce289097e3; repository topology remains exactly dev/main; Executor stops NEEDS_REVIEW."
+
+verification:
+  authoritative_verification:
+    required: false
+    rationale: "This is the low-risk public-foundation slice. Repository-native deterministic checks plus production-route smoke and exact diff/ref proof are sufficient; external CI is not required."
+  required_checks:
+    - "pnpm lint"
+    - "pnpm typecheck"
+    - "pnpm build"
+    - "pnpm verify"
+    - "Production-server HTTP 200 smoke for /, /work, /about and /contact"
+    - "Representative narrow/wide overflow, focus and readability inspection"
+    - "Exact diff inspection for forbidden later-slice dependencies and client boundaries"
+
+capability_requirements:
+  EXECUTION:
+    required:
+      - repository_content_read
+      - repository_content_write
+      - native_repository_execution
+      - git_history_read
+      - git_commit
+      - git_push
+      - remote_ref_read
+  REVIEW:
+    required:
+      - repository_content_read
+      - repository_content_write
+      - git_history_read
+      - git_commit
+      - git_push
+      - remote_ref_read
+
+git_authority:
+  commit: true
+  push: true
+  create_branch: false
+  promote: false
+  force_push: false
+  tag: false
+  release: false
+
+execution_ready: true
