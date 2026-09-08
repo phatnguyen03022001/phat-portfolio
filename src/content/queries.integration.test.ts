@@ -4,6 +4,7 @@ import { MongoMemoryServer } from "mongodb-memory-server-core";
 import { bootstrapSiteProfile, bootstrapWorkItems } from "./bootstrap-data";
 import { siteProfileSchema, workItemSchema, type SiteProfile, type WorkItem } from "./model";
 import {
+  getPublishedWorkBySlug,
   getSiteProfile,
   listCurrentPublishedWork,
   listPublishedWork,
@@ -158,5 +159,48 @@ describe("Mongo editorial boundary", () => {
     await db.collection<{ _id: string; [key: string]: unknown }>("work_items").insertOne(malformed);
 
     await expect(listPublishedWork()).rejects.toThrow();
+  });
+});
+
+
+describe("published work detail query", () => {
+  it("returns a matching published work item", async () => {
+    const db = await getDatabase();
+    const published = workItemSchema.parse(bootstrapWorkItems[0]);
+    await db.collection<WorkItem>("work_items").insertOne(published);
+
+    await expect(getPublishedWorkBySlug(published.slug)).resolves.toEqual(published);
+  });
+
+  it("returns null for a matching draft slug", async () => {
+    const db = await getDatabase();
+    const published = workItemSchema.parse(bootstrapWorkItems[0]);
+    const draft = {
+      ...published,
+      _id: "synthetic-draft-detail",
+      slug: "synthetic-draft-detail",
+      publicationStatus: "DRAFT" as const,
+      publishedAt: null,
+    };
+    await db.collection<WorkItem>("work_items").insertOne(draft);
+
+    await expect(getPublishedWorkBySlug(draft.slug)).resolves.toBeNull();
+  });
+
+  it("returns null for a missing slug", async () => {
+    await expect(getPublishedWorkBySlug("missing-work-detail")).resolves.toBeNull();
+  });
+
+  it("fails closed when a matching published document is malformed", async () => {
+    const db = await getDatabase();
+    const malformed = {
+      ...workItemSchema.parse(bootstrapWorkItems[0]),
+      _id: "malformed-published-detail",
+      slug: "malformed-published-detail",
+      category: "INVALID_CATEGORY",
+    };
+    await db.collection<{ _id: string; [key: string]: unknown }>("work_items").insertOne(malformed);
+
+    await expect(getPublishedWorkBySlug(malformed.slug)).rejects.toThrow();
   });
 });

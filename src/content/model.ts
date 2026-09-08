@@ -3,7 +3,20 @@ import { z } from "zod";
 const shortText = z.string().trim().min(1).max(200);
 const paragraph = z.string().trim().min(1).max(2_000);
 const markdown = z.string().max(12_000);
-const url = z.url().max(2_048);
+const absoluteUrl = z.url().max(2_048);
+
+function hasAllowedProtocol(value: string, protocols: readonly string[]): boolean {
+  try {
+    return protocols.includes(new URL(value).protocol);
+  } catch {
+    return false;
+  }
+}
+
+const httpUrl = absoluteUrl.refine((value) => hasAllowedProtocol(value, ["http:", "https:"]));
+const externalUrl = absoluteUrl.refine((value) =>
+  hasAllowedProtocol(value, ["http:", "https:", "mailto:"]),
+);
 const rank = z.number().int().min(0).max(999).nullable();
 
 export const workCollectionSchema = z.enum(["WORK", "LAB", "ARCHIVE"]);
@@ -46,14 +59,14 @@ const engineeringPrincipleSchema = z
 const linkSchema = z
   .object({
     label: shortText,
-    url,
+    url: externalUrl,
   })
   .strict();
 
 const repositoryReferenceSchema = z
   .object({
     label: shortText,
-    url,
+    url: httpUrl,
   })
   .strict();
 
@@ -73,7 +86,7 @@ const evidenceRecordSchema = z
     result: paragraph.optional(),
     sourceKind: shortText.optional(),
     sourceLabel: shortText.optional(),
-    sourceUrl: url.optional(),
+    sourceUrl: httpUrl.optional(),
     revision: shortText.optional(),
     observedAt: z.date().optional(),
   })

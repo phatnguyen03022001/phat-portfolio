@@ -36,3 +36,13 @@ export async function listCurrentPublishedWork(): Promise<WorkItem[]> {
 
   return documents.map((document) => workItemSchema.parse(document));
 }
+
+
+export async function getPublishedWorkBySlug(slug: string): Promise<WorkItem | null> {
+  const db = await getDatabase();
+  const document = await db
+    .collection<WorkItem>(WORK_ITEM_COLLECTION)
+    .findOne({ slug, publicationStatus: "PUBLISHED" });
+
+  return document ? workItemSchema.parse(document) : null;
+}

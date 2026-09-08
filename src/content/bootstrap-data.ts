@@ -64,7 +64,20 @@ export const bootstrapWorkItems = [
         url: "https://github.com/phatnguyen03022001/ilets",
       },
     ],
-    sections: [],
+    sections: [
+      {
+        kind: "OVERVIEW",
+        title: "Overview",
+        markdown:
+          "current product/domain engineering candidate centered on a knowledge-first IELTS learning system.",
+      },
+      {
+        kind: "KNOWN_LIMITATIONS",
+        title: "Known limitations",
+        markdown:
+          "the portfolio does not yet publish outcome/operation claims that are not independently evidenced.",
+      },
+    ],
     evidence: [],
     technologies: [],
     externalLinks: [],
@@ -106,7 +119,20 @@ export const bootstrapWorkItems = [
         url: "https://github.com/phatnguyen03022001/agent-runtime",
       },
     ],
-    sections: [],
+    sections: [
+      {
+        kind: "OVERVIEW",
+        title: "Overview",
+        markdown:
+          "current agentic engineering system candidate spanning architect-profile, agent-skills, agent-documents, agent-standards, and agent-runtime.",
+      },
+      {
+        kind: "KNOWN_LIMITATIONS",
+        title: "Known limitations",
+        markdown:
+          "the portfolio does not collapse repository/task evidence into a synthetic maturity or production-readiness score.",
+      },
+    ],
     evidence: [],
     technologies: [],
     externalLinks: [],

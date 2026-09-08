@@ -128,6 +128,37 @@ describe("bootstrap editorial data", () => {
     expect(works.every((work) => work.collection === "WORK")).toBe(true);
     expect(works.every((work) => work.publicationStatus === "PUBLISHED")).toBe(true);
     expect(works.some((work) => work.category === "COMMERCIAL_OPERATIONAL")).toBe(false);
+    expect(works.map((work) => work.sections)).toEqual([
+      [
+        {
+          kind: "OVERVIEW",
+          title: "Overview",
+          markdown:
+            "current product/domain engineering candidate centered on a knowledge-first IELTS learning system.",
+        },
+        {
+          kind: "KNOWN_LIMITATIONS",
+          title: "Known limitations",
+          markdown:
+            "the portfolio does not yet publish outcome/operation claims that are not independently evidenced.",
+        },
+      ],
+      [
+        {
+          kind: "OVERVIEW",
+          title: "Overview",
+          markdown:
+            "current agentic engineering system candidate spanning architect-profile, agent-skills, agent-documents, agent-standards, and agent-runtime.",
+        },
+        {
+          kind: "KNOWN_LIMITATIONS",
+          title: "Known limitations",
+          markdown:
+            "the portfolio does not collapse repository/task evidence into a synthetic maturity or production-readiness score.",
+        },
+      ],
+    ]);
+    expect(works.every((work) => work.evidence.length === 0)).toBe(true);
   });
 });
 
@@ -152,11 +183,56 @@ describe("public component data ownership", () => {
     expect(
       renderToStaticMarkup(createElement(EngineeringApproach, { principles: profile.engineeringPrinciples })),
     ).toContain("Injected Principle");
-    expect(renderToStaticMarkup(createElement(SelectedWork, { workItems: [work] }))).toContain(
-      "Injected Work Title",
-    );
+    const selectedWorkHtml = renderToStaticMarkup(createElement(SelectedWork, { workItems: [work] }));
+    expect(selectedWorkHtml).toContain("Injected Work Title");
+    expect(selectedWorkHtml).toContain('href="/work/injected-work"');
     expect(
       renderToStaticMarkup(createElement(CurrentBuilding, { currentBuilding: profile.home.currentBuilding })),
     ).toContain("Injected current building");
+  });
+});
+
+
+describe("structured URL policy", () => {
+  it("keeps repository references HTTP(S) while allowing mailto for contact and external links", () => {
+    expect(
+      workItemSchema.safeParse({
+        ...validWorkItem,
+        repositoryReferences: [{ label: "Repository", url: "mailto:repo@example.com" }],
+      }).success,
+    ).toBe(false);
+    expect(
+      workItemSchema.safeParse({
+        ...validWorkItem,
+        repositoryReferences: [{ label: "Repository", url: "ftp://example.com/repo" }],
+      }).success,
+    ).toBe(false);
+    expect(
+      siteProfileSchema.safeParse({
+        ...validSiteProfile,
+        contactLinks: [{ label: "Email", url: "mailto:hello@example.com" }],
+      }).success,
+    ).toBe(true);
+    expect(
+      workItemSchema.safeParse({
+        ...validWorkItem,
+        externalLinks: [{ label: "Email", url: "mailto:hello@example.com" }],
+      }).success,
+    ).toBe(true);
+  });
+
+  it("rejects non-approved schemes for structured links", () => {
+    expect(
+      siteProfileSchema.safeParse({
+        ...validSiteProfile,
+        contactLinks: [{ label: "Blocked", url: "javascript:blocked" }],
+      }).success,
+    ).toBe(false);
+    expect(
+      workItemSchema.safeParse({
+        ...validWorkItem,
+        externalLinks: [{ label: "Blocked", url: "data:text/plain,blocked" }],
+      }).success,
+    ).toBe(false);
   });
 });

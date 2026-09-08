@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import type { WorkCategory, WorkItem } from "../../content/model";
 
 type SelectedWorkProps = {
@@ -34,10 +36,17 @@ export function SelectedWork({ workItems }: SelectedWorkProps) {
                 <p className="work-card__category">{categoryLabels[work.category]}</p>
               </div>
               <div>
-                <h3 className="work-card__title">{work.title}</h3>
+                <h3 className="work-card__title">
+                  <Link href={`/work/${work.slug}`}>{work.title}</Link>
+                </h3>
                 <p className="work-card__summary">{work.summary}</p>
                 <p className="status-line">
                   {work.currentRank === null ? "Published work" : "Current evidence-backed candidate"}
+                </p>
+                <p className="section-actions">
+                  <Link className="text-link" href={`/work/${work.slug}`}>
+                    Read case study
+                  </Link>
                 </p>
               </div>
             </article>
