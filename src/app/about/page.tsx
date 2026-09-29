@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { EngineeringApproach } from "@/components/public/engineering-approach";
+import { PlaceholderVisual } from "@/components/public/placeholder-visual";
 import { getSiteProfile } from "@/content/queries";
 
 export const metadata: Metadata = {
@@ -12,38 +14,19 @@ export default async function AboutPage() {
 
   return (
     <>
-      <section className="site-container page-intro" aria-labelledby="about-page-title">
-        <p className="eyebrow">{profile.identity.role}</p>
-        <h1 className="display-title" id="about-page-title">
-          {profile.identity.name}
-        </h1>
-        <p className="hero__specialization">{profile.identity.specialization}</p>
-        <p className="lede">{profile.home.aboutSummary}</p>
+      <section className="site-container page-intro page-intro--with-media" aria-labelledby="about-page-title">
+        <div className="page-intro__copy">
+          <p className="eyebrow">{profile.identity.role}</p>
+          <h1 className="display-title" id="about-page-title">
+            {profile.identity.name}
+          </h1>
+          <p className="hero__specialization">{profile.identity.specialization}</p>
+          <p className="lede">{profile.home.aboutSummary}</p>
+        </div>
+        <PlaceholderVisual variant="detail" slot="about-identity" />
       </section>
 
-      <section className="section" aria-labelledby="principles-title">
-        <div className="site-container">
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">Principles</p>
-              <h2 className="section-title" id="principles-title">
-                Reviewable decisions over architectural theatre.
-              </h2>
-            </div>
-            <p className="section-copy">
-              Capability is described through working principles and evidence, not proficiency percentages or technology icon clouds.
-            </p>
-          </div>
-          <div className="approach-grid">
-            {profile.engineeringPrinciples.map((principle) => (
-              <article className="approach-card" key={principle.title}>
-                <h3>{principle.title}</h3>
-                <p>{principle.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <EngineeringApproach principles={profile.engineeringPrinciples} />
     </>
   );
 }

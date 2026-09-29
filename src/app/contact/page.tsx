@@ -11,12 +11,15 @@ export default async function ContactPage() {
   const profile = await getSiteProfile();
 
   return (
-    <section className="site-container page-intro" aria-labelledby="contact-page-title">
-      <p className="eyebrow">Contact</p>
-      <h1 className="display-title" id="contact-page-title">
-        Direct contact, no form layer.
-      </h1>
-      <p className="lede">{profile.home.contactPrompt}</p>
+    <section className="site-container contact-page" aria-labelledby="contact-page-title">
+      <div className="contact-page__intro">
+        <p className="eyebrow">Contact</p>
+        <h1 className="display-title" id="contact-page-title">
+          Direct contact, no form layer.
+        </h1>
+        <p className="lede">{profile.home.contactPrompt}</p>
+      </div>
+
       <ul className="contact-list">
         {profile.contactLinks.map((link) => (
           <li key={link.url}>
