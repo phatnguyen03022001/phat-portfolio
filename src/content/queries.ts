@@ -1,48 +1,44 @@
-import { getDatabase } from "../db/mongodb";
+import { portfolioSiteProfile, portfolioWorkItems } from "./portfolio-data";
 import { siteProfileSchema, workItemSchema, type SiteProfile, type WorkItem } from "./model";
 
-const SITE_PROFILE_COLLECTION = "site_profiles";
-const WORK_ITEM_COLLECTION = "work_items";
+const siteProfile = siteProfileSchema.parse(portfolioSiteProfile);
+const workItems = portfolioWorkItems.map((work) => workItemSchema.parse(work));
+
+function compareRank(
+  left: number | null,
+  right: number | null,
+  fallbackLeft: string,
+  fallbackRight: string,
+): number {
+  const leftRank = left ?? Number.MAX_SAFE_INTEGER;
+  const rightRank = right ?? Number.MAX_SAFE_INTEGER;
+  return leftRank - rightRank || fallbackLeft.localeCompare(fallbackRight);
+}
 
 export async function getSiteProfile(): Promise<SiteProfile> {
-  const db = await getDatabase();
-  const document = await db.collection<SiteProfile>(SITE_PROFILE_COLLECTION).findOne({ _id: "site" });
-
-  if (!document) {
-    throw new Error("SiteProfile singleton is missing.");
-  }
-
-  return siteProfileSchema.parse(document);
+  return siteProfile;
 }
 
-export async function listPublishedWork(): Promise<WorkItem[]> {
-  const db = await getDatabase();
-  const documents = await db
-    .collection<WorkItem>(WORK_ITEM_COLLECTION)
-    .find({ publicationStatus: "PUBLISHED", collection: "WORK" })
-    .sort({ featuredRank: 1, title: 1, _id: 1 })
-    .toArray();
-
-  return documents.map((document) => workItemSchema.parse(document));
+export async function listWork(): Promise<WorkItem[]> {
+  return workItems
+    .filter((work) => work.collection === "WORK")
+    .sort(
+      (left, right) =>
+        compareRank(left.featuredRank, right.featuredRank, left.title, right.title) ||
+        left._id.localeCompare(right._id),
+    );
 }
 
-export async function listCurrentPublishedWork(): Promise<WorkItem[]> {
-  const db = await getDatabase();
-  const documents = await db
-    .collection<WorkItem>(WORK_ITEM_COLLECTION)
-    .find({ publicationStatus: "PUBLISHED", currentRank: { $ne: null } })
-    .sort({ currentRank: 1, title: 1, _id: 1 })
-    .toArray();
-
-  return documents.map((document) => workItemSchema.parse(document));
+export async function listCurrentWork(): Promise<WorkItem[]> {
+  return workItems
+    .filter((work) => work.currentRank !== null)
+    .sort(
+      (left, right) =>
+        compareRank(left.currentRank, right.currentRank, left.title, right.title) ||
+        left._id.localeCompare(right._id),
+    );
 }
 
-
-export async function getPublishedWorkBySlug(slug: string): Promise<WorkItem | null> {
-  const db = await getDatabase();
-  const document = await db
-    .collection<WorkItem>(WORK_ITEM_COLLECTION)
-    .findOne({ slug, publicationStatus: "PUBLISHED" });
-
-  return document ? workItemSchema.parse(document) : null;
+export async function getWorkBySlug(slug: string): Promise<WorkItem | null> {
+  return workItems.find((work) => work.slug === slug) ?? null;
 }

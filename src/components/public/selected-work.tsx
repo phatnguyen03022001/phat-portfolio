@@ -25,7 +25,7 @@ export function SelectedWork({ workItems }: SelectedWorkProps) {
             </h2>
           </div>
           <p className="section-copy">
-            This portfolio shows only published work with evidence behind the claim. It does not manufacture outcomes or production claims.
+            This portfolio shows only curated work with evidence behind the claim. It does not manufacture outcomes or production claims.
           </p>
         </div>
         <div className="work-grid">
@@ -41,7 +41,7 @@ export function SelectedWork({ workItems }: SelectedWorkProps) {
                 </h3>
                 <p className="work-card__summary">{work.summary}</p>
                 <p className="status-line">
-                  {work.currentRank === null ? "Published work" : "Current evidence-backed candidate"}
+                  {work.currentRank === null ? "Evidence-backed work" : "Current evidence-backed candidate"}
                 </p>
                 <p className="section-actions">
                   <Link className="text-link" href={`/work/${work.slug}`}>

@@ -7,8 +7,6 @@ export const metadata: Metadata = {
   description: "Direct contact links for Nguyen Tien Phat.",
 };
 
-export const dynamic = "force-dynamic";
-
 export default async function ContactPage() {
   const profile = await getSiteProfile();
 

@@ -8,32 +8,58 @@ Target product:
 
 Production hostname: `phat.picmao.com`.
 
-Repository policy:
+## Architecture
 
-- `dev` is the working/integration branch.
-- `main` is the stable branch.
-- GitHub is canonical for application code and repository authority.
-- MongoDB is the runtime editorial source for the current public portfolio slice.
-- Owner authentication and bounded WorkItem draft/edit/publish tooling are part of the current V1 slice. SiteProfile and media administration remain read-only; managed media, GitHub import, contact forms, analytics, and 3D remain later authorized slices.
+This repository is intentionally a public evidence site, not a portfolio CMS.
 
-## Current V1 status
-
-The current implementation is a server-rendered Next.js portfolio with MongoDB-backed editorial reads for `SiteProfile` and published `WorkItem` content. The owner-only `/admin/work` surface can create drafts, edit drafts, publish, and unpublish through the accepted Better Auth owner gate. Published WorkItems are read-only until explicitly unpublished; slug mutation and deletion are intentionally absent. Bootstrap data seeds the approved identity and the two current evidence-backed work candidates only; it is migration input, not a runtime fallback.
-
-## Runtime environment
-
-Create a local environment file outside version control with:
-
-```bash
-MONGODB_URI=mongodb://127.0.0.1:27017/phat_portfolio
-BETTER_AUTH_SECRET=<at-least-32-character-secret>
-BETTER_AUTH_URL=http://localhost:3000
-GITHUB_CLIENT_ID=<github-oauth-client-id>
-GITHUB_CLIENT_SECRET=<github-oauth-client-secret>
-GITHUB_OWNER_ID=<immutable-github-account-id>
+```text
+GitHub repository
+  ↓
+typed content-as-code
+  ↓
+Next.js server/static rendering
+  ↓
+Vercel
 ```
 
-`MONGODB_URI` is required at request time for public editorial pages, auth persistence, and the bootstrap command. Better Auth also requires the five auth variables above at auth request time. Configure the GitHub OAuth callback as `/api/auth/callback/github`; the GitHub OAuth/App must allow the `user:email` permission used by Better Auth's GitHub flow. Secrets and the real owner account ID must stay outside committed files.
+- `dev` is the working/integration branch.
+- `main` is the stable production branch.
+- GitHub is the source of truth for application code, portfolio content, evidence links, and revision history.
+- Public content lives in `src/content/portfolio-data.ts` and is validated by the schemas in `src/content/model.ts`.
+- There is no application authentication, admin workspace, editorial database, or runtime CMS.
+- Adding or correcting portfolio proof is an ordinary reviewed code/content change.
+
+## Current product surface
+
+Public routes:
+
+```text
+/
+/work
+/work/[slug]
+/about
+/contact
+```
+
+The portfolio is server-first and evidence-first. Case studies use typed sections, constrained Markdown, repository references, explicit evidence states, and known limitations. Claims must remain proportional to inspectable evidence.
+
+Media is optional presentation material. Source authoring format is not a domain contract; browser delivery should simply be compatible, responsive, accessible, and appropriately optimized for the page.
+
+## Editing portfolio content
+
+Update `src/content/portfolio-data.ts`.
+
+A normal project/proof update is:
+
+```text
+inspect source repository/evidence
+→ update typed portfolio content
+→ run verification
+→ review diff
+→ commit/push through the normal Git workflow
+```
+
+Do not invent employment, customers, production operation, metrics, outcomes, or other credibility claims. Use direct evidence links where practical.
 
 ## Development
 
@@ -47,13 +73,7 @@ pnpm install --frozen-lockfile --ignore-scripts
 pnpm dev
 ```
 
-Seed the current approved editorial documents and indexes with:
-
-```bash
-pnpm content:bootstrap
-```
-
-Run the repository verification contract with:
+Verification:
 
 ```bash
 pnpm lint
@@ -63,6 +83,6 @@ pnpm build
 pnpm verify
 ```
 
-`pnpm verify` runs linting, TypeScript checking, integration tests, and the production build. `pnpm build` must remain independent of a live MongoDB endpoint or real auth/provider runtime configuration; runtime requests require the relevant environment values.
+`pnpm verify` runs linting, TypeScript checking, tests, and the production build.
 
-Implementation must remain evidence-driven, accessible, maintainable, and intentionally simple.
+Implementation should remain accessible, maintainable, evidence-driven, and intentionally simple.

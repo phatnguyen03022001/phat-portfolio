@@ -26,7 +26,6 @@ export const workCategorySchema = z.enum([
   "COMMERCIAL_OPERATIONAL",
   "SUPPORTING",
 ]);
-export const publicationStatusSchema = z.enum(["DRAFT", "PUBLISHED"]);
 export const caseStudySectionKindSchema = z.enum([
   "OVERVIEW",
   "PROBLEM",
@@ -133,7 +132,6 @@ export const workItemSchema = z
     summary: paragraph,
     category: workCategorySchema,
     collection: workCollectionSchema,
-    publicationStatus: publicationStatusSchema,
     featuredRank: rank,
     currentRank: rank,
     repositoryReferences: z.array(repositoryReferenceSchema).max(12),
@@ -143,12 +141,10 @@ export const workItemSchema = z
     externalLinks: z.array(linkSchema).max(12),
     createdAt: z.date(),
     updatedAt: z.date(),
-    publishedAt: z.date().nullable(),
   })
   .strict();
 
 export type SiteProfile = z.infer<typeof siteProfileSchema>;
 export type WorkItem = z.infer<typeof workItemSchema>;
-export type PublicationStatus = z.infer<typeof publicationStatusSchema>;
 export type WorkCollection = z.infer<typeof workCollectionSchema>;
 export type WorkCategory = z.infer<typeof workCategorySchema>;

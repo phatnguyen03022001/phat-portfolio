@@ -5,12 +5,10 @@ import { CurrentBuilding } from "@/components/public/current-building";
 import { EngineeringApproach } from "@/components/public/engineering-approach";
 import { Hero } from "@/components/public/hero";
 import { SelectedWork } from "@/components/public/selected-work";
-import { getSiteProfile, listCurrentPublishedWork } from "@/content/queries";
-
-export const dynamic = "force-dynamic";
+import { getSiteProfile, listCurrentWork } from "@/content/queries";
 
 export default async function Home() {
-  const [profile, currentWork] = await Promise.all([getSiteProfile(), listCurrentPublishedWork()]);
+  const [profile, currentWork] = await Promise.all([getSiteProfile(), listCurrentWork()]);
 
   return (
     <>

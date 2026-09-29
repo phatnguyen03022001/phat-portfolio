@@ -1,17 +1,15 @@
 import type { Metadata } from "next";
 
 import { SelectedWork } from "@/components/public/selected-work";
-import { listPublishedWork } from "@/content/queries";
+import { listWork } from "@/content/queries";
 
 export const metadata: Metadata = {
   title: "Work",
   description: "Curated engineering work from Nguyen Tien Phat, limited to current evidence-backed candidates.",
 };
 
-export const dynamic = "force-dynamic";
-
 export default async function WorkPage() {
-  const workItems = await listPublishedWork();
+  const workItems = await listWork();
 
   return (
     <>

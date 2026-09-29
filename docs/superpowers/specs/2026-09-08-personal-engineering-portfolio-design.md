@@ -1,18 +1,28 @@
 # Personal Engineering Portfolio Design
 
 **Status:** APPROVED
+
 **Target repository:** `phatnguyen03022001/phat-portfolio`
+
 **Production hostname:** `phat.picmao.com`
+
 **Working branch:** `dev`
+
 **Stable branch:** `main`
+
+## Authority and historical truth
+
+This document is the current forward product/design authority for the portfolio.
+
+Historical tasks, reports, reviews, and commits remain truthful records of prior implementation states. Architecture simplification does not retroactively rewrite that history.
+
+> Historical implementation truth != current forward architecture authority.
+
+The implementation may temporarily contain legacy or in-flight migration state until separately authorized work reconciles it with this target.
 
 ## Product identity
 
-Build a production-quality personal engineering portfolio for Nguyen Tien Phat.
-
-The product is:
-
-`personal brand × engineering dossier × living systems portfolio`
+The product is a **public engineering evidence portfolio** for Nguyen Tien Phat.
 
 Primary identity:
 
@@ -20,226 +30,216 @@ Primary identity:
 - Software Engineer
 - AI-native Products & Agentic Systems
 
-The product must not position the owner primarily as an AI Engineer, prompt engineer, Three.js developer, frontend developer, full-stack web developer, generic freelancer, or "10x engineer".
+Primary purpose:
 
-Claims must remain proportional to available evidence. Do not invent seniority, employment history, customers, revenue, adoption, production usage, certifications, years of experience, performance gains, or other credibility signals.
+`landing page + strong engineering dossiers + easy agent-assisted proof updates`
+
+The portfolio is a hiring evidence surface, not a repository gallery, CMS, private application, or technology showcase.
+
+Claims must remain proportional to evidence. Do not invent or inflate seniority, employment history, freelancing, customers, revenue, adoption, production usage, years of experience, performance gains, certifications, deployment, operations, or outcomes.
 
 ## Product north star
 
-Optimize for:
+Optimize for progressive recruiter understanding:
 
-- ~60 seconds: understand who Phat is.
-- ~3 minutes: understand what classes of software problems he can own.
-- ~10 minutes: find enough verifiable evidence to trust the claims.
+### ~60 seconds
+
+`identity → specialization → strongest proof`
+
+A reviewer should quickly understand who Phat is, what kinds of engineering work he focuses on, and where the strongest inspectable evidence lives.
+
+### ~3 minutes
+
+`problem classes → responsibility → architecture → key decisions → verification → current engineering activity`
+
+A reviewer should understand what was personally owned, important constraints, system shape, material decisions, and how correctness or quality was established.
+
+### ~10 minutes
+
+`claim → source/revision/task/test/deployment evidence → known limitations`
+
+A reviewer should be able to inspect enough evidence to judge claims without relying on marketing prose.
+
+Public communication should be artifact-led and plain-English first. Prefer descriptive headings, short paragraphs, bullets, architecture views, repository/revision links, task/review evidence, verification records, screenshots, images, and short video where they communicate more precisely than prose.
 
 ## Design constitution
 
 1. Proof determines credibility.
-2. 3D determines memory.
-3. Content remains usable without WebGL.
-4. Every media asset must explain, prove, or make memorable.
-5. Complexity must be compressed, never displayed for its own sake.
-6. Claims must never exceed evidence.
-7. Content wins over decorative presentation.
-8. Static composition must remain strong without motion.
-9. Accessibility and reduced-motion behavior are first-class requirements.
-10. Architecture exists to serve communication and maintainability, not spectacle.
+2. Claims must remain traceable.
+3. Recruiter comprehension wins over prose volume.
+4. Responsibility and evidence appear before implementation trivia.
+5. Complexity is compressed, never displayed for its own sake.
+6. Static composition remains useful without motion.
+7. Accessibility and reduced-motion behavior are first-class requirements.
+8. Media must explain, prove, or make information easier to understand.
+9. Architecture serves communication and maintainability, not spectacle.
+10. Employment history and engineering activity remain factually distinct.
+11. The smallest sufficient product architecture is preferred.
 
-Visual direction:
+### Visual direction
 
-- clean editorial product UI;
+Prefer:
+
 - strong typography;
-- generous hierarchy;
-- restrained gradients;
-- restrained motion;
-- distinctive 3D identity later;
-- technical evidence surfaces.
+- explicit visual hierarchy;
+- layer-cake scanning;
+- whitespace;
+- one restrained accent;
+- asymmetry when it improves composition;
+- technical evidence surfaces;
+- meaningful imagery or short video;
+- responsive composition;
+- accessible static readability without motion.
 
-Avoid generic purple-blue AI-template styling, skill percentage bars, giant technology-icon clouds, fake terminal aesthetics everywhere, excessive glassmorphism, scroll-jacking, forced cinematic transitions, noisy particle backgrounds, game-like navigation, blocking loading screens, and decorative 3D without informational value.
+Avoid:
 
-## V1 visual implementation rule
+- generic purple/blue AI-template identity;
+- giant technology-icon walls;
+- skill percentage bars;
+- fake terminal proof;
+- fake dashboards;
+- fake metrics;
+- invented testimonials;
+- repository dumps as portfolio composition;
+- generic equal-card spam;
+- excessive glassmorphism;
+- scroll-jacking;
+- blocking cinematic intros;
+- noisy decorative complexity;
+- motion whose main purpose is to demonstrate technical complexity.
 
-V1 launches without custom Three.js character assets.
+## Target architecture
 
-Use temporary, replaceable media where needed. Temporary media must not imply factual evidence that does not exist and must be visually subordinate to the content.
+The smallest correct target system is:
 
-Frontend implementation uses:
+```text
+Browser
+  ↓
+Next.js public site
+  ↓
+repository-owned content-as-code
+  ↓
+optional static/generated image/video media
+  ↓
+Vercel
+```
 
-- Next.js App Router;
-- React;
-- TypeScript;
-- shadcn/ui primitives where they materially reduce implementation risk;
-- project-owned global CSS and design tokens for the site's visual identity.
+Git/GitHub owns:
 
-Do not let shadcn defaults define the brand. Use it primarily for accessible interaction primitives and low-level UI behavior. The product's typography, spacing, composition, surfaces, motion, and responsive behavior remain project-owned through global styles/tokens and focused components.
+- durable application source;
+- portfolio content;
+- content and revision history;
+- review;
+- rollback;
+- publication lineage.
 
-## Approved V2 character direction
+There is no logical customer account, application owner/admin role, private product surface, editorial database, or runtime CMS.
 
-Style:
+A normal agent-assisted proof update is:
 
-- stylized anime-inspired 3D;
-- semi-realistic face;
-- clean cel shading;
-- minimal techwear;
-- professional with a light futuristic influence;
-- not chibi;
-- not visually noisy cyberpunk.
+```text
+inspect source project/repository
+→ establish factual claims
+→ establish evidence
+→ update repository-owned portfolio content
+→ validate/build
+→ inspect diff
+→ publish through Git
+```
 
-Outfit:
+Git history replaces the need for an application-level editorial history subsystem.
 
-- dark technical jacket;
-- plain inner shirt;
-- slim dark pants;
-- minimal sneakers;
-- one Picmao accent color.
+Branch/deployment direction may remain:
 
-Environment:
+```text
+dev  → working / preview integration
+main → stable production
+```
 
-- neutral studio / abstract tech space;
-- soft light;
-- clean background;
-- very limited holographic UI.
-
-Owner-provided source assets later:
-
-1. current face photo;
-2. three-quarter face photo;
-3. side profile;
-4. full-body front;
-5. full-body side/back if available;
-6. outfit reference;
-7. color palette;
-8. hair reference;
-9. four poses: idle / engineering / project / contact;
-10. static character poster fallback.
-
-Expected later deliverables:
-
-- `character.blend`;
-- `character.glb`;
-- `textures/`;
-- `character-poster.avif`;
-- `character-poster-mobile.avif`.
-
-These assets are owner-created and are not generated during V1 implementation.
+Do not recreate database `DRAFT` / `PUBLISHED` semantics merely to duplicate Git workflow.
 
 ## Public information architecture
 
+Keep the public product focused on:
+
 ```text
 /
-├── Hero / identity
-├── Selected Work
-├── Engineering Approach
-├── Current / Building
-├── Evidence Philosophy
-├── About summary
-└── Contact CTA
+├── identity / strongest proof
+├── selected flagship work
+├── engineering approach
+├── current engineering activity
+├── evidence philosophy
+├── about summary
+└── contact CTA
 
 /work
 └── curated work index
 
 /work/[slug]
-└── engineering case study
+└── engineering dossier / case study
 
 /about
-└── positioning, background, experience, capabilities, principles, links
+└── positioning, factual engineering activity, principles, links
 
 /contact
 └── direct contact channels
 ```
 
-Do not create `/lab` until real content justifies it.
+No authenticated variants are required.
 
-## Owner/admin information architecture
+Do not create new public sections merely to fill navigation. Add surfaces only when real content or user value justifies them.
 
-```text
-/admin
-├── dashboard
-├── work
-├── profile
-└── media
-```
+## Content ownership semantics
 
-Do not create separate admin nouns for systems, skills, experience, external links, or settings unless a real independent lifecycle earns them.
+Portfolio content is repository-owned content-as-code.
 
-## Canonical editorial model
+The product contract is semantic, not serialization-specific. Do not permanently require TypeScript, JSON, YAML, Markdown, or another authoring format as product architecture. The implementation may choose an appropriate representation and may change it later without changing the domain model.
 
-Use only three first-class application content collections in V1:
+The content system must support these concepts without requiring separate services:
 
-1. `SiteProfile`
-2. `WorkItem`
-3. `MediaAsset`
+- identity and positioning;
+- curated work/dossiers;
+- factual engineering activity;
+- claims and supporting evidence;
+- repository/source references;
+- architecture and decision context;
+- verification;
+- known limitations;
+- optional media metadata.
 
-Better Auth owns its own persistence records.
+Do not create a first-class runtime database or service merely to represent these concepts.
 
-`Project` and `System` are one `WorkItem` model with categorization.
+## Flagship dossier model
 
-Embedded profile values include experience, capability groups, external links, and contact links.
+Primary public work should foreground no more than three flagship dossiers. Two complete flagships are preferable to inventing or weakening a third.
 
-Embedded work values include repository references, case-study sections, evidence, technologies, and external links.
+A strong dossier should support, when evidenced:
 
-### Work classification
+- Overview
+- Problem
+- Constraints
+- Responsibility
+- Architecture
+- Key decisions
+- Trade-offs
+- Implementation
+- Verification
+- Operations
+- Outcome
+- Known limitations
+- Inspection/proof links
 
-`collection`:
+`Operations` and `Outcome` must remain absent when direct evidence does not support them.
 
-- `WORK`
-- `LAB`
-- `ARCHIVE`
+A flagship is publication-ready only when factual review can support a clear problem, personal responsibility, important constraints, system shape, material decisions, verification, limitations, and direct inspection surfaces.
 
-Initial `category` values:
-
-- `PRODUCT_DOMAIN`
-- `AGENTIC_SYSTEM`
-- `COMMERCIAL_OPERATIONAL`
-- `SUPPORTING`
-
-Do not turn these into a large ontology.
-
-### Publication
-
-At minimum:
-
-- `DRAFT`
-- `PUBLISHED`
-
-Public queries return published content only.
-
-Drafts are absent from public routes, sitemap, OG generation, search/discovery surfaces, and anonymous data paths. Protected owner preview may render drafts.
-
-## Case-study model
-
-Supported section kinds:
-
-- `OVERVIEW`
-- `PROBLEM`
-- `CONSTRAINTS`
-- `RESPONSIBILITY`
-- `ARCHITECTURE`
-- `KEY_DECISIONS`
-- `TRADE_OFFS`
-- `IMPLEMENTATION`
-- `VERIFICATION`
-- `OPERATIONS`
-- `OUTCOME`
-- `KNOWN_LIMITATIONS`
-
-All sections are optional. System-owned ordering is preferred over a generic page builder.
-
-## Rich content
-
-Use constrained Markdown inside typed case-study sections.
-
-Allow basic prose, headings, lists, emphasis, links, code, fenced code blocks, and blockquotes where useful.
-
-Disallow raw HTML, scripts, iframes, arbitrary component execution, MDX imports, and inline event handlers.
-
-Media references remain structured data rather than arbitrary executable Markdown extensions.
+Repository links without that narrative are supporting evidence, not the case study itself.
 
 ## Evidence model
 
-Evidence is first-class but embedded in its `WorkItem`.
+Evidence is first-class.
 
-Distinguish states:
+Where useful, distinguish:
 
 - `IMPLEMENTED`
 - `VERIFIED`
@@ -247,123 +247,98 @@ Distinguish states:
 - `DEPLOYED`
 - `OPERATED`
 
-An evidence record may contain claim, state, method, result, source kind/label/url, revision, and observation date.
+A material claim should point to the nearest practical inspection surface:
 
-Never collapse these states into a synthetic percentage or production-readiness score.
+- repository/revision;
+- task/review artifact;
+- test result;
+- deployed surface;
+- operational observation;
+- another direct source.
 
-## Initial portfolio narrative
+Do not infer `DEPLOYED` or `OPERATED` from source-code existence, tests, or repository activity.
 
-Three flagship categories:
+Do not collapse evidence states into percentages, synthetic readiness scores, or decorative metrics.
 
-1. Product / Domain Engineering — current candidate: `ilets`.
-2. Agentic Engineering System — `architect-profile`, `agent-skills`, `agent-documents`, `agent-standards`, and `agent-runtime` presented as one system.
-3. Commercial / Operational Software — reserved until real evidence exists.
+## Engineering activity and career narrative
 
-Older repositories may become supporting or archive content after factual review. Do not automatically publish GitHub repositories.
+The portfolio should support a factual engineering-activity chronology.
 
-## Runtime architecture
+It must distinguish concepts such as:
 
-One deployable Next.js application.
+- `EMPLOYMENT`
+- `INDEPENDENT_ENGINEERING`
+- `PROFESSIONAL_DEVELOPMENT`
+- `EDUCATION`
+- `CAREER_BREAK`
 
-```text
-Browser
-  ↓
-Next.js App Router
-  ├── public Server Components
-  ├── owner admin
-  ├── auth boundary
-  ├── content query/mutation boundary
-  ├── GitHub import boundary
-  └── Cloudinary media boundary
-       ↓
-MongoDB + Better Auth persistence
-```
+These labels describe content semantics and do not require a runtime enum.
 
-No independent backend API, API gateway, Redis, queue, event bus, microservices, generic CMS, or provider framework in V1.
+Never turn unemployment, study, personal projects, independent engineering, or professional development into employment, freelancing, client work, or company experience without evidence.
 
-Server Components are the default. Client Components exist only where browser interaction requires them.
+The timeline is context, not an apology. Do not publish defensive explanations about English ability or career gaps. Reduce prose dependence through descriptive headings, concise plain English, diagrams, repository links, revisions, tests, reviews, screenshots, images, and short video where useful.
 
-Public pages must not call GitHub APIs or Cloudinary management APIs during normal rendering.
+## Media policy
 
-## Persistence
+Media is optional visual communication.
 
-Select MongoDB as the V1 editorial persistence store.
+**Authoring format is not product semantics.**
 
-Use the official MongoDB Node.js driver initially. Do not use Mongoose or another ODM unless later evidence shows concrete value exceeding complexity.
+Do not require source authoring to use AVIF, WebP, PNG, JPEG, MP4, WebM, MOV, GLB, or any other specific format.
 
-Centralize connection management. Validate writes at the application boundary. Use bounded documents. Do not embed unbounded collections. Define indexes from actual query patterns.
+Source media may come from:
 
-Initial material indexes:
+- AI image/video generation;
+- screenshots;
+- screen recordings;
+- Figma or other design tools;
+- image/video editors;
+- browser conversion tools;
+- other legitimate authoring workflows.
 
-- unique work slug;
-- publication status + collection + featured rank;
-- publication status + current rank where used;
-- unique Cloudinary asset identity.
+Product-level delivery requirements should remain behavioral:
 
-Use additive schema evolution first. Store a `schemaVersion` on first-class documents. Introduce one-off migration scripts only when an actual schema change requires them.
+- browser-compatible;
+- responsive;
+- accessible;
+- useful dimensions/aspect metadata where applicable;
+- poster/fallback where appropriate;
+- lazy loading below the critical path;
+- no autoplay with sound;
+- reasonable payload/performance;
+- optional media must not carry unique required information.
 
-## Authentication
+Generated or decorative media must never masquerade as factual:
 
-Use Better Auth with GitHub OAuth and its MongoDB adapter unless implementation-time verification finds a material incompatibility.
+- product screenshots;
+- customer evidence;
+- metrics;
+- production usage;
+- deployment proof;
+- operational proof;
+- engineering proof.
 
-Exactly one logical application role exists: owner/admin.
-
-Authorization is not "authenticated = admin". Every privileged server action must additionally verify the configured immutable GitHub owner identity.
-
-No RBAC, organizations, memberships, password database, self-service registration, or custom recovery flow.
-
-## Media
-
-Activate Cloudinary in V1 for owner-managed editorial images.
-
-Cloudinary owns media bytes, transformations, and delivery.
-
-MongoDB owns portfolio media identity, provider references, metadata, and editorial relations.
-
-Use authenticated server-generated signed uploads. The API secret remains server-side.
-
-V1 supports images only. Video is later when a real requirement exists.
-
-Stable brand assets may remain under `public/brand/`.
-
-3D runtime assets are a separate V2 ownership class and must not become ordinary editorial CMS assets by default.
-
-## GitHub integration
-
-V1 import/refresh is explicit owner action only.
-
-Flow:
-
-```text
-Admin
-→ enter owner/repository
-→ fetch selected metadata
-→ create/attach repository snapshot
-→ owner curates narrative
-→ publish manually
-```
-
-Imported metadata may include repository name, URL, description, topics, languages, stars, default branch, and pushed time where useful.
-
-GitHub never owns portfolio positioning, case-study prose, evidence summary, featured state, media, limitations, or ordering.
-
-Refresh updates imported repository metadata only.
-
-Do not build continuous synchronization.
+Do not introduce a generic media-provider abstraction or media-management backend without a measured requirement.
 
 ## Contact
 
-V1 uses direct contact links only.
+Use direct contact links.
 
-Do not implement a contact form until there is evidence it materially improves the product. This avoids an otherwise unnecessary email provider, spam surface, rate limiter, delivery monitoring, and privacy boundary.
+Do not add a contact-form backend unless evidence shows it materially improves the product. Avoid unnecessary email infrastructure, spam surface, rate limiting, monitoring, or privacy boundaries.
 
-## SEO/discovery
+## SEO and discovery
 
-V1 must support semantic metadata, canonical URLs, sitemap, robots, accessible indexable public case studies, project-specific Open Graph metadata, and semantically valid structured data only where justified.
+Support:
 
-Draft content must never enter public discovery surfaces.
+- semantic metadata;
+- canonical URLs;
+- sitemap;
+- robots;
+- accessible indexable dossiers;
+- project-specific Open Graph metadata;
+- semantically valid structured data where justified.
 
-Archive content should remain outside primary navigation and normally be `noindex` unless intentionally promoted.
+Archive/supporting content should stay outside primary navigation unless intentionally promoted.
 
 ## Performance
 
@@ -372,82 +347,85 @@ Critical path:
 ```text
 HTML / useful content
 → core interaction
-→ optional enhancement
+→ optional media enhancement
 ```
 
-V1 ships no Three.js.
+Useful public content and hero identity should not depend on client JavaScript where server/static rendering is sufficient.
 
-Hero LCP content must not depend on JavaScript. Images use known dimensions and responsive delivery. Below-fold media may lazy-load.
+Use known media dimensions and responsive delivery where practical. Lazy-load below-fold optional media.
 
-Do not set arbitrary bundle-size targets without measurement; remove unjustified client boundaries instead.
+Do not invent arbitrary bundle-size targets without measurement. Remove unjustified client boundaries instead.
 
 ## Accessibility
 
-Require semantic markup, keyboard operation, useful focus states, sufficient contrast, responsive layouts, touch-safe controls, useful alternative text, and reduced-motion support.
+Require:
 
-3D must never be the sole carrier of information.
+- semantic markup;
+- keyboard operation;
+- visible/useful focus states;
+- sufficient contrast;
+- responsive layouts;
+- touch-safe controls;
+- useful alternative text/captions;
+- reduced-motion support.
 
-## V2 Three.js boundary
-
-The server-rendered portfolio remains complete before Three.js initializes.
-
-```text
-static poster
-  ↓
-optional lazy client island
-  ↓
-GLB character
-```
-
-Fallback to static poster for reduced motion, unsupported WebGL, load failure, or environments where measured cost is not justified.
-
-Initial behaviors are bounded to idle, engineering, project, and contact.
-
-Draco, Meshopt, KTX2/Basis, advanced shaders, or richer environments are introduced only after measured evidence justifies them.
+Meaningful image/video content must have understandable textual context.
 
 ## Deployment
 
 Preferred target: Vercel.
 
-Environment mapping:
+Environment direction:
 
 - local development → local;
-- `dev` → preview/integration deployment;
-- `main` → stable production deployment;
+- `dev` → preview/integration;
+- `main` → stable production;
 - `phat.picmao.com` → production hostname.
 
-Cloudflare owns parent-domain DNS. Vercel owns application hosting/TLS/deployment.
+Cloudflare may own parent-domain DNS. Vercel owns application hosting, TLS, and deployment.
 
-Do not add staging, Docker orchestration, Kubernetes, reverse proxies, or custom infrastructure without a concrete requirement.
+Do not add staging infrastructure, Docker orchestration, Kubernetes, reverse proxies, custom backend services, queues, caches, or other runtime infrastructure without a concrete requirement.
 
-## Verification
+## Verification expectations
 
-Risk-proportional verification must cover:
+Risk-proportional verification should cover, when the corresponding capability exists:
 
-- runtime schema/content logic;
-- Mongo data integration;
-- owner authentication and authorization;
-- draft/published isolation;
-- GitHub import mapping and failure behavior;
-- Cloudinary signing/registration when enabled;
-- public route smoke tests;
+- content validation;
+- first-viewport identity and proof cues;
+- factual engineering-activity labeling;
+- flagship dossier completeness;
+- claim-to-evidence traceability;
+- constrained rich-content safety if used;
+- public-route smoke tests;
 - representative responsive viewports;
 - keyboard/focus behavior;
-- accessibility automation plus manual sanity checks;
+- accessibility sanity checks;
 - reduced-motion behavior;
-- SEO metadata, sitemap, robots, canonical URLs, OG state;
+- SEO metadata/sitemap/robots/canonical/OG state;
 - production build;
 - browser runtime errors;
 - deployment smoke testing.
 
 Do not chase arbitrary test counts.
 
-## Explicit non-goals
+## Explicit forward non-goals
 
-V1 does not include:
+The target architecture does not require:
 
-- multi-tenant CMS;
-- generic CMS platform;
+- Better Auth or another application authentication system;
+- GitHub OAuth authentication;
+- sessions/customer accounts;
+- owner authorization;
+- `/admin/**`;
+- admin editing forms;
+- MongoDB editorial persistence;
+- another runtime editorial database;
+- runtime draft/publish state;
+- generic CMS behavior;
+- Cloudinary as required architecture;
+- MediaAsset persistence as a CMS subsystem;
+- runtime GitHub import/refresh;
+- runtime GitHub API as a portfolio-content dependency;
 - multiple authorization roles;
 - microservices;
 - event bus;
@@ -455,52 +433,32 @@ V1 does not include:
 - queues;
 - plugin architecture;
 - generic media-provider abstraction;
-- design-system package;
 - custom analytics platform;
-- blog engine without content strategy;
-- auto-publishing GitHub repositories;
 - arbitrary page builder;
 - AI chat widget;
-- fake operating-system UI;
-- 3D on every page;
-- custom Three.js character assets;
-- contact form;
-- video media pipeline;
-- V3 cinematic effects.
+- contact-form backend;
+- Three.js;
+- WebGL;
+- GLB asset pipeline;
+- 3D character;
+- 3D fallback architecture;
+- V2 3D roadmap;
+- cinematic/animation infrastructure for spectacle.
 
-## Repository structure direction
+Historical evidence may mention previously implemented or planned features from this list. Such mentions remain historical/non-target and do not re-establish forward authority.
 
-Keep source shallow and ownership-oriented.
+## Delivery direction
 
-Expected direction:
+Future implementation should proceed in independently reviewable slices:
 
-```text
-src/
-├── app/
-├── auth/
-├── content/
-├── db/
-├── github/
-├── media/
-└── components/
-    ├── public/
-    ├── admin/
-    └── ui/
-```
+1. qualify and reconcile the existing simplification candidate;
+2. finalize the content-as-code ownership boundary;
+3. reconcile current portfolio data against factual evidence;
+4. deepen the strongest two or three flagship dossiers;
+5. implement recruiter-scan composition;
+6. add factual engineering activity chronology;
+7. add optional media without provider/format lock-in;
+8. harden SEO, accessibility, and performance;
+9. activate stable production.
 
-Do not create directories for future features before real code exists.
-
-## Delivery slices
-
-1. repository/public foundation;
-2. Mongo-backed editorial model and public reads;
-3. dossier/case-study UX;
-4. owner auth/admin shell;
-5. editorial mutations and publish workflow;
-6. editorial media;
-7. GitHub import/refresh;
-8. launch hardening;
-9. production activation;
-10. V2 3D only after V1 acceptance.
-
-Each slice must be independently reviewable and should not pull future-slice infrastructure forward without a material reason.
+Each slice must keep the smallest sufficient architecture and must not pull speculative infrastructure forward.

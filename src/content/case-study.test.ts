@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 
 import { MarkdownContent } from "../components/public/markdown-content";
 import { WorkCaseStudy } from "../components/public/work-case-study";
-import { bootstrapWorkItems } from "./bootstrap-data";
+import { portfolioWorkItems } from "./portfolio-data";
 import { workItemSchema, type WorkItem } from "./model";
 import { orderCaseStudySections, safeMarkdownUrl } from "./case-study";
 
@@ -101,7 +101,7 @@ describe("case-study presentation policy", () => {
 
 describe("WorkCaseStudy", () => {
   it("server-renders ordered sections, repositories, evidence states, technologies, and external links", () => {
-    const source = bootstrapWorkItems[0];
+    const source = portfolioWorkItems[0];
     const work = workItemSchema.parse({
       ...source,
       sections: [...source.sections].reverse(),
@@ -113,7 +113,7 @@ describe("WorkCaseStudy", () => {
           result: "Verification evidence is attached without upgrading deployment claims.",
         },
       ],
-      technologies: ["TypeScript", "MongoDB"],
+      technologies: ["TypeScript", "Next.js"],
       externalLinks: [{ label: "Reference", url: "https://example.com/reference" }],
     });
 
@@ -129,7 +129,7 @@ describe("WorkCaseStudy", () => {
   });
 
   it("renders an honest empty evidence state without a synthetic score", () => {
-    const work = workItemSchema.parse(bootstrapWorkItems[1]);
+    const work = workItemSchema.parse(portfolioWorkItems[1]);
     const html = renderToStaticMarkup(createElement(WorkCaseStudy, { work }));
 
     expect(html).toContain("No published evidence records are attached to this case study yet.");

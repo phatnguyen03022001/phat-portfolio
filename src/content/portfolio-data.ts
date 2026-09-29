@@ -1,6 +1,6 @@
-const bootstrapTimestamp = new Date("2026-09-08T00:00:00.000Z");
+const portfolioTimestamp = new Date("2026-09-08T00:00:00.000Z");
 
-export const bootstrapSiteProfile = {
+export const portfolioSiteProfile = {
   _id: "site",
   schemaVersion: 1,
   identity: {
@@ -10,7 +10,7 @@ export const bootstrapSiteProfile = {
     intro: "I build software around clear ownership, bounded complexity, and evidence that can survive review.",
   },
   home: {
-    currentBuilding: "Editorial persistence now backs the public portfolio while later owner tooling remains deferred.",
+    currentBuilding: "I am building evidence-first software systems and turning the strongest work into inspectable engineering case studies.",
     evidencePhilosophy:
       "Implemented, verified, accepted, deployed, and operated are different states. Claims stay proportional to the evidence available.",
     aboutSummary:
@@ -41,11 +41,11 @@ export const bootstrapSiteProfile = {
       url: "https://github.com/phatnguyen03022001",
     },
   ],
-  createdAt: bootstrapTimestamp,
-  updatedAt: bootstrapTimestamp,
+  createdAt: portfolioTimestamp,
+  updatedAt: portfolioTimestamp,
 } as const;
 
-export const bootstrapWorkItems = [
+export const portfolioWorkItems = [
   {
     _id: "knowledge-first-ielts-learning-system",
     schemaVersion: 1,
@@ -55,7 +55,6 @@ export const bootstrapWorkItems = [
       "A current product and domain engineering candidate centered on an IELTS learning system.",
     category: "PRODUCT_DOMAIN",
     collection: "WORK",
-    publicationStatus: "PUBLISHED",
     featuredRank: 1,
     currentRank: 1,
     repositoryReferences: [
@@ -81,9 +80,8 @@ export const bootstrapWorkItems = [
     evidence: [],
     technologies: [],
     externalLinks: [],
-    createdAt: bootstrapTimestamp,
-    updatedAt: bootstrapTimestamp,
-    publishedAt: bootstrapTimestamp,
+    createdAt: portfolioTimestamp,
+    updatedAt: portfolioTimestamp,
   },
   {
     _id: "governed-agentic-engineering-system",
@@ -94,7 +92,6 @@ export const bootstrapWorkItems = [
       "A current system candidate spanning architecture, skills, documents, standards, and local runtime governance.",
     category: "AGENTIC_SYSTEM",
     collection: "WORK",
-    publicationStatus: "PUBLISHED",
     featuredRank: 2,
     currentRank: 2,
     repositoryReferences: [
@@ -136,8 +133,7 @@ export const bootstrapWorkItems = [
     evidence: [],
     technologies: [],
     externalLinks: [],
-    createdAt: bootstrapTimestamp,
-    updatedAt: bootstrapTimestamp,
-    publishedAt: bootstrapTimestamp,
+    createdAt: portfolioTimestamp,
+    updatedAt: portfolioTimestamp,
   },
 ] as const;

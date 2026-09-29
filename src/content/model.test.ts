@@ -6,7 +6,7 @@ import { CurrentBuilding } from "../components/public/current-building";
 import { EngineeringApproach } from "../components/public/engineering-approach";
 import { SelectedWork } from "../components/public/selected-work";
 
-import { bootstrapSiteProfile, bootstrapWorkItems } from "./bootstrap-data";
+import { portfolioSiteProfile, portfolioWorkItems } from "./portfolio-data";
 import { siteProfileSchema, workItemSchema } from "./model";
 
 const now = new Date("2026-09-08T00:00:00.000Z");
@@ -21,7 +21,7 @@ const validSiteProfile = {
     intro: "Evidence-first engineering with bounded complexity.",
   },
   home: {
-    currentBuilding: "Editorial persistence for the public portfolio.",
+    currentBuilding: "Evidence-first engineering work in progress.",
     evidencePhilosophy: "Claims stay smaller than the evidence.",
     aboutSummary: "Software engineering is the durable identity.",
     contactPrompt: "Start with the work and the constraints.",
@@ -45,7 +45,6 @@ const validWorkItem = {
   summary: "A current product and domain engineering candidate centered on an IELTS learning system.",
   category: "PRODUCT_DOMAIN",
   collection: "WORK",
-  publicationStatus: "PUBLISHED",
   featuredRank: 1,
   currentRank: 1,
   repositoryReferences: [
@@ -73,7 +72,6 @@ const validWorkItem = {
   externalLinks: [],
   createdAt: now,
   updatedAt: now,
-  publishedAt: now,
 };
 
 describe("editorial schemas", () => {
@@ -82,10 +80,7 @@ describe("editorial schemas", () => {
     expect(workItemSchema.parse(validWorkItem).slug).toBe(validWorkItem.slug);
   });
 
-  it("rejects unapproved publication, category, and evidence states", () => {
-    expect(
-      workItemSchema.safeParse({ ...validWorkItem, publicationStatus: "PRIVATE" }).success,
-    ).toBe(false);
+  it("rejects unapproved category and evidence states", () => {
     expect(workItemSchema.safeParse({ ...validWorkItem, category: "AI_PROJECT" }).success).toBe(
       false,
     );
@@ -111,22 +106,21 @@ describe("editorial schemas", () => {
 });
 
 
-describe("bootstrap editorial data", () => {
-  it("contains only the approved identity and two evidence-backed published work candidates", () => {
-    expect(siteProfileSchema.parse(bootstrapSiteProfile).identity).toMatchObject({
+describe("portfolio data", () => {
+  it("contains only the approved identity and two evidence-backed work candidates", () => {
+    expect(siteProfileSchema.parse(portfolioSiteProfile).identity).toMatchObject({
       name: "Nguyen Tien Phat",
       role: "Software Engineer",
       specialization: "AI-native Products & Agentic Systems",
     });
 
-    const works = bootstrapWorkItems.map((work) => workItemSchema.parse(work));
+    const works = portfolioWorkItems.map((work) => workItemSchema.parse(work));
     expect(works).toHaveLength(2);
     expect(works.map((work) => work.title)).toEqual([
       "Knowledge-first IELTS Learning System",
       "Governed Agentic Engineering System",
     ]);
     expect(works.every((work) => work.collection === "WORK")).toBe(true);
-    expect(works.every((work) => work.publicationStatus === "PUBLISHED")).toBe(true);
     expect(works.some((work) => work.category === "COMMERCIAL_OPERATIONAL")).toBe(false);
     expect(works.map((work) => work.sections)).toEqual([
       [
@@ -166,15 +160,15 @@ describe("bootstrap editorial data", () => {
 describe("public component data ownership", () => {
   it("renders passed editorial values instead of bundled fixture ownership", () => {
     const profile = siteProfileSchema.parse({
-      ...bootstrapSiteProfile,
-      identity: { ...bootstrapSiteProfile.identity, name: "Injected Profile Name" },
-      home: { ...bootstrapSiteProfile.home, currentBuilding: "Injected current building" },
+      ...portfolioSiteProfile,
+      identity: { ...portfolioSiteProfile.identity, name: "Injected Profile Name" },
+      home: { ...portfolioSiteProfile.home, currentBuilding: "Injected current building" },
       engineeringPrinciples: [
         { title: "Injected Principle", description: "Injected principle description." },
       ],
     });
     const work = workItemSchema.parse({
-      ...bootstrapWorkItems[0],
+      ...portfolioWorkItems[0],
       _id: "injected-work",
       slug: "injected-work",
       title: "Injected Work Title",
