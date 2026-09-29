@@ -8,8 +8,6 @@ type WorkDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const dynamicParams = false;
-
 export async function generateStaticParams() {
   return (await listWork()).map((work) => ({ slug: work.slug }));
 }
