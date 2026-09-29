@@ -348,13 +348,40 @@ main {
 /* Hero Section */
 .hero-shell {
   position: relative;
+  overflow: hidden;
   border-bottom: 1px solid var(--border);
   background:
     radial-gradient(ellipse at 75% 25%, color-mix(in oklch, var(--picmao-accent) 7%, transparent), transparent 60%),
     var(--background);
 }
 
+.hero-shell__watermark {
+  position: absolute;
+  top: 1.5rem;
+  right: clamp(1.5rem, 5vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: clamp(0.68rem, 1.1vw, 0.78rem);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: color-mix(in oklch, var(--muted-foreground) 40%, transparent);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.hero-shell__watermark-sub {
+  font-size: 0.62rem;
+  opacity: 0.6;
+  letter-spacing: 0.18em;
+}
+
 .hero {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(16rem, 0.85fr);
   align-items: center;
@@ -406,7 +433,27 @@ main {
 }
 
 .hero__media {
+  position: relative;
   width: 100%;
+}
+
+.hero__media-backdrop {
+  position: absolute;
+  inset: -1.25rem -1rem 1.25rem 1rem;
+  border: 1px dashed color-mix(in oklch, var(--picmao-accent) 18%, transparent);
+  border-radius: var(--radius-2xl);
+  background: radial-gradient(
+    ellipse at 60% 40%,
+    color-mix(in oklch, var(--picmao-accent) 8%, transparent),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero .media-frame {
+  position: relative;
+  z-index: 1;
 }
 
 /* Sections Common */
@@ -454,15 +501,26 @@ main {
   gap: clamp(2rem, 5vw, 4.5rem);
 }
 
-.work-showcase__item:nth-child(even) .work-showcase__article {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+/* IELTS: Knowledge-First Lead System — Asymmetric wide composition */
+.work-showcase__article--knowledge {
+  grid-template-columns: minmax(0, 1.28fr) minmax(0, 1fr);
 }
 
-.work-showcase__item:nth-child(even) .work-showcase__media {
+.work-showcase__article--knowledge .work-showcase__media {
+  position: relative;
+}
+
+/* Agentic System: Governed Control Plane — Offset Reverse-Split Console */
+.work-showcase__article--agentic {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+}
+
+.work-showcase__article--agentic .work-showcase__media {
   order: 2;
+  position: relative;
 }
 
-.work-showcase__item:nth-child(even) .work-showcase__content {
+.work-showcase__article--agentic .work-showcase__content {
   order: 1;
 }
 
@@ -721,19 +779,30 @@ main {
   min-height: clamp(18rem, 34vw, 26rem);
 }
 
-.media-frame--work .media-frame__viewport {
+.media-frame--work .media-frame__viewport,
+.media-frame--knowledge .media-frame__viewport,
+.media-frame--agentic .media-frame__viewport {
   aspect-ratio: 16 / 10;
   min-height: clamp(14rem, 26vw, 20rem);
 }
 
-.media-frame--detail .media-frame__viewport {
+.media-frame--detail .media-frame__viewport,
+.media-frame--identity .media-frame__viewport {
   aspect-ratio: 1.2 / 1;
   min-height: clamp(14rem, 24vw, 18rem);
 }
 
-.media-frame--wide .media-frame__viewport {
+.media-frame--wide .media-frame__viewport,
+.media-frame--architecture .media-frame__viewport {
   aspect-ratio: 16 / 9;
   min-height: clamp(14rem, 28vw, 22rem);
+}
+
+.media-frame__placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .media-asset {
@@ -1442,90 +1511,536 @@ main {
 }
 
 /* ---------------------------------------------------- */
-/* ABSTRACT DECORATIVE GRAPHIC LAYERS                   */
+/* TECHNICAL VISUAL PLACEHOLDERS & SCHEMATICS           */
 /* ---------------------------------------------------- */
 .placeholder-visual {
-  position: relative;
+  position: absolute;
+  inset: 0;
   isolation: isolate;
   overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
+  width: 100%;
+  height: 100%;
   background:
-    radial-gradient(ellipse at 80% 20%, color-mix(in oklch, var(--picmao-accent) 14%, transparent), transparent 55%),
+    radial-gradient(ellipse at 80% 20%, color-mix(in oklch, var(--picmao-accent) 12%, transparent), transparent 60%),
     linear-gradient(160deg, var(--surface), var(--surface-strong));
-  box-shadow: var(--shadow-soft);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1.5rem;
+  box-sizing: border-box;
 }
 
 .placeholder-visual--hero {
   aspect-ratio: 1.05 / 1;
   min-height: clamp(18rem, 34vw, 26rem);
-  width: 100%;
+}
+
+.placeholder-visual--knowledge {
+  border-color: color-mix(in oklch, oklch(0.78 0.1 65) 28%, var(--border));
+  background:
+    radial-gradient(ellipse at 75% 25%, color-mix(in oklch, oklch(0.78 0.1 65) 12%, transparent), transparent 65%),
+    linear-gradient(165deg, var(--surface), var(--surface-strong));
+  padding-top: 2.5rem;
+}
+
+.placeholder-visual--agentic {
+  border-color: color-mix(in oklch, oklch(0.75 0.12 195) 28%, var(--border));
+  background:
+    radial-gradient(ellipse at 30% 70%, color-mix(in oklch, oklch(0.75 0.12 195) 12%, transparent), transparent 65%),
+    linear-gradient(165deg, var(--surface), var(--surface-strong));
+  padding-top: 2.5rem;
+}
+
+.placeholder-visual--identity {
+}
+
+.placeholder-visual--architecture {
+  padding-top: 2.5rem;
 }
 
 .placeholder-visual--work {
-  aspect-ratio: 16 / 10;
-  min-height: clamp(14rem, 26vw, 20rem);
-  width: 100%;
 }
 
 .placeholder-visual--detail {
-  aspect-ratio: 1.2 / 1;
-  min-height: clamp(14rem, 24vw, 18rem);
-  width: 100%;
 }
 
-.placeholder-visual--alternate {
-  background:
-    radial-gradient(ellipse at 20% 80%, color-mix(in oklch, var(--picmao-accent) 14%, transparent), transparent 55%),
-    linear-gradient(200deg, var(--surface), var(--surface-strong));
-}
-
-.placeholder-visual > img,
-.placeholder-visual > video {
+.placeholder-visual__background-grid {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 2;
-}
-
-.placeholder-visual__grid {
-  position: absolute;
-  inset: 0;
-  opacity: 0.22;
+  opacity: 0.18;
   background-image:
     linear-gradient(var(--border) 1px, transparent 1px),
     linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size: 2.25rem 2.25rem;
-  mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+  background-size: 2rem 2rem;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
+  pointer-events: none;
 }
 
-.placeholder-visual__glow {
+.placeholder-visual__ambient-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, color-mix(in oklch, var(--foreground) 4%, transparent), transparent 70%);
+}
+
+/* Micro-metadata bar */
+.pv-meta-bar {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  z-index: 3;
+}
+
+.pv-meta-bar--amber {
+  color: oklch(0.78 0.1 65);
+}
+
+.pv-meta-bar--cyan {
+  color: oklch(0.75 0.12 195);
+}
+
+.pv-meta-tag {
+  opacity: 0.85;
+}
+
+.pv-meta-id {
+  opacity: 0.7;
+}
+
+/* 1. Knowledge Strata Layout (IELTS) */
+.pv-knowledge {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  width: 92%;
+  gap: 1.15rem;
+  margin-top: 0;
+}
+
+.pv-knowledge__strata {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.pv-stratum {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+}
+
+.pv-token {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: color-mix(in oklch, oklch(0.85 0.08 65) 85%, var(--foreground));
+  min-width: 7.5rem;
+  white-space: nowrap;
+}
+
+.pv-token-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: color-mix(in oklch, oklch(0.78 0.1 65) 35%, var(--border));
+  flex: 1;
+}
+
+.pv-token-bar--wide {
+  max-width: 55%;
+}
+
+.pv-token-bar--mid {
+  max-width: 40%;
+}
+
+.pv-token-bar--narrow {
+  max-width: 25%;
+}
+
+.pv-token-pill {
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in oklch, oklch(0.78 0.1 65) 30%, transparent);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: oklch(0.78 0.1 65);
+  background: color-mix(in oklch, oklch(0.78 0.1 65) 8%, transparent);
+  white-space: nowrap;
+}
+
+.pv-knowledge__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.pv-cell {
+  height: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: color-mix(in oklch, var(--foreground) 3%, transparent);
+}
+
+.pv-cell--active {
+  border-color: color-mix(in oklch, oklch(0.78 0.1 65) 45%, transparent);
+  background: color-mix(in oklch, oklch(0.78 0.1 65) 16%, transparent);
+}
+
+/* 2. Agentic Control Plane Layout */
+.pv-agentic {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  margin-top: 0;
+}
+
+.pv-agentic__graph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.pv-graph-node {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--foreground);
+  box-shadow: 0 2px 8px color-mix(in oklch, black 30%, transparent);
+  white-space: nowrap;
+}
+
+.pv-node-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--muted-foreground);
+}
+
+.pv-node-dot--active {
+  background: oklch(0.75 0.12 195);
+  box-shadow: 0 0 8px oklch(0.75 0.12 195);
+}
+
+.pv-graph-conduit--v {
+  width: 1px;
+  height: 1.25rem;
+  background: linear-gradient(to bottom, var(--border), oklch(0.75 0.12 195));
+}
+
+.pv-graph-conduits-split {
+  position: relative;
+  width: min(12rem, 80%);
+  height: 0.75rem;
+  border-top: 1px dashed color-mix(in oklch, oklch(0.75 0.12 195) 45%, var(--border));
+  margin-top: 0.25rem;
+}
+
+.pv-graph-cluster {
+  display: flex;
+  justify-content: space-between;
+  width: min(15rem, 95%);
+  gap: 1rem;
+}
+
+/* 3. Hero Monolith Reticle Layout */
+.pv-hero {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pv-hero__corner {
+  position: absolute;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-color: color-mix(in oklch, var(--picmao-accent) 65%, transparent);
+  pointer-events: none;
+}
+
+.pv-hero__corner--tl {
+  top: 1rem;
+  left: 1rem;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+
+.pv-hero__corner--tr {
+  top: 1rem;
+  right: 1rem;
+  border-top: 2px solid;
+  border-right: 2px solid;
+}
+
+.pv-hero__corner--bl {
+  bottom: 1rem;
+  left: 1rem;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+}
+
+.pv-hero__corner--br {
+  bottom: 1rem;
+  right: 1rem;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+.pv-reticle {
+  position: relative;
+  width: clamp(7.5rem, 40%, 12rem);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pv-reticle__ring {
   position: absolute;
   border-radius: 999px;
-  filter: blur(40px);
   pointer-events: none;
-  opacity: 0.45;
 }
 
-.placeholder-visual__glow--a {
-  top: 15%;
-  right: 15%;
-  width: 45%;
-  height: 45%;
+.pv-reticle__ring--outer {
+  inset: 0;
+  border: 1px dashed color-mix(in oklch, var(--picmao-accent) 45%, var(--border));
+}
+
+.pv-reticle__ring--inner {
+  inset: 20%;
+  border: 1px solid color-mix(in oklch, var(--picmao-accent) 55%, transparent);
+}
+
+.pv-reticle__axis-h {
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  height: 1px;
+  background: color-mix(in oklch, var(--picmao-accent) 25%, transparent);
+}
+
+.pv-reticle__axis-v {
+  position: absolute;
+  top: -8%;
+  bottom: -8%;
+  width: 1px;
+  background: color-mix(in oklch, var(--picmao-accent) 25%, transparent);
+}
+
+.pv-monolith {
+  position: relative;
+  width: 3.25rem;
+  height: 3.25rem;
+  transform: rotate(45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pv-monolith__face {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--picmao-accent);
+  background: color-mix(in oklch, var(--picmao-accent) 15%, var(--surface));
+  backdrop-filter: blur(8px);
+  border-radius: 4px;
+}
+
+.pv-monolith__edge {
+  position: absolute;
+  inset: 24%;
+  border: 1px dashed color-mix(in oklch, var(--picmao-accent) 60%, transparent);
+  border-radius: 2px;
+}
+
+.pv-monolith__core {
+  width: 0.5rem;
+  height: 0.5rem;
   background: var(--picmao-accent);
+  border-radius: 1px;
+  box-shadow: 0 0 10px var(--picmao-accent);
+  position: relative;
+  z-index: 1;
 }
 
-.placeholder-visual__glow--b {
-  bottom: 15%;
-  left: 20%;
-  width: 35%;
-  height: 35%;
-  background: color-mix(in oklch, var(--picmao-accent) 60%, transparent);
+/* 4. Identity Calibration Prism */
+.pv-identity {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pv-identity__compass {
+  position: relative;
+  width: clamp(6.5rem, 36%, 9rem);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in oklch, var(--foreground) 18%, transparent);
+  border-radius: 999px;
+}
+
+.pv-compass__tick {
+  position: absolute;
+  background: var(--muted-foreground);
+}
+
+.pv-compass__tick--0 {
+  top: -4px;
+  left: 50%;
+  width: 1px;
+  height: 8px;
+  transform: translateX(-50%);
+}
+
+.pv-compass__tick--90 {
+  right: -4px;
+  top: 50%;
+  width: 8px;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.pv-compass__tick--180 {
+  bottom: -4px;
+  left: 50%;
+  width: 1px;
+  height: 8px;
+  transform: translateX(-50%);
+}
+
+.pv-compass__tick--270 {
+  left: -4px;
+  top: 50%;
+  width: 8px;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.pv-prism {
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.pv-prism__facet {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+}
+
+.pv-prism__facet--a {
+  border: 1px solid var(--border);
+  transform: rotate(30deg);
+  background: color-mix(in oklch, var(--foreground) 4%, transparent);
+}
+
+.pv-prism__facet--b {
+  border: 1px solid var(--picmao-accent);
+  transform: rotate(60deg);
+  background: color-mix(in oklch, var(--picmao-accent) 10%, transparent);
+}
+
+/* 5. Architecture Pipeline Layout */
+.pv-architecture {
+  position: relative;
+  z-index: 2;
+  width: 92%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+
+.pv-pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.65rem;
+}
+
+.pv-pipe-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  flex: 1;
+  text-align: center;
+}
+
+.pv-pipe-stage--active {
+  border-color: color-mix(in oklch, var(--picmao-accent) 55%, var(--border));
+  box-shadow: 0 0 14px color-mix(in oklch, var(--picmao-accent) 15%, transparent);
+}
+
+.pv-pipe-badge {
+  font-size: 0.62rem;
+  color: var(--muted-foreground);
+  letter-spacing: 0.08em;
+}
+
+.pv-pipe-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--foreground);
+  white-space: nowrap;
+}
+
+.pv-pipe-conduit {
+  width: 1.25rem;
+  height: 1px;
+  background: linear-gradient(to right, var(--border), var(--picmao-accent), var(--border));
+  flex-shrink: 0;
+}
+
+/* Fallback default */
+.pv-default {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .placeholder-visual__ring {
@@ -1550,7 +2065,7 @@ main {
 
 .placeholder-visual__core {
   position: relative;
-  width: clamp(5rem, 16%, 7.5rem);
+  width: clamp(4.5rem, 16%, 6.5rem);
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
@@ -1574,39 +2089,6 @@ main {
   border: 1px dashed color-mix(in oklch, var(--picmao-accent) 65%, transparent);
   transform: rotate(45deg);
   border-radius: 0.25rem;
-}
-
-.placeholder-visual__node {
-  position: absolute;
-  width: 0.65rem;
-  height: 0.65rem;
-  border-radius: 999px;
-  background: var(--picmao-accent);
-  box-shadow: 0 0 0 3px color-mix(in oklch, var(--picmao-accent) 20%, transparent);
-  z-index: 1;
-}
-
-.placeholder-visual__node--a {
-  top: 24%;
-  left: 22%;
-  animation: node-drift 7s ease-in-out infinite alternate;
-}
-
-.placeholder-visual__node--b {
-  right: 20%;
-  bottom: 28%;
-  animation: node-drift 8s ease-in-out infinite alternate-reverse;
-}
-
-.placeholder-visual__node--c {
-  bottom: 18%;
-  left: 36%;
-  animation: node-drift 6s ease-in-out infinite alternate;
-}
-
-@keyframes node-drift {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(5px, -7px, 0); }
 }
 
 /* Footer */
@@ -1667,15 +2149,19 @@ main {
   }
 
   .work-showcase__article,
+  .work-showcase__article--knowledge,
+  .work-showcase__article--agentic,
   .work-showcase__item:nth-child(even) .work-showcase__article {
     grid-template-columns: 1fr;
     gap: 1.75rem;
   }
 
+  .work-showcase__article--agentic .work-showcase__media,
   .work-showcase__item:nth-child(even) .work-showcase__media {
     order: 0;
   }
 
+  .work-showcase__article--agentic .work-showcase__content,
   .work-showcase__item:nth-child(even) .work-showcase__content {
     order: 0;
   }
@@ -1747,12 +2233,6 @@ main {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-
-  .placeholder-visual__node--a,
-  .placeholder-visual__node--b,
-  .placeholder-visual__node--c {
-    animation: none !important;
   }
 
   .media-frame:hover .media-asset {

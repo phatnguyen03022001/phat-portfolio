@@ -24,13 +24,8 @@ export default async function AboutPage() {
           <p className="lede">{profile.home.aboutSummary}</p>
         </div>
         <MediaSurface
-          variant="detail"
+          variant="identity"
           slot="about-identity"
-          asset={{
-            type: "image",
-            src: "https://picsum.photos/seed/phat-about/1000/833",
-            alt: "Engineering workspace and calibration perspective",
-          }}
         />
       </section>
 

@@ -15,22 +15,6 @@ const categoryLabels: Record<WorkCategory, string> = {
   SUPPORTING: "Supporting",
 };
 
-const placeholderWorkAssets: Record<
-  string,
-  { type: "image"; src: string; alt: string }
-> = {
-  "knowledge-first-ielts-learning-system": {
-    type: "image",
-    src: "https://picsum.photos/seed/phat-ielts-hero/1200/750",
-    alt: "Knowledge-first IELTS learning system structure",
-  },
-  "governed-agentic-engineering-system": {
-    type: "image",
-    src: "https://picsum.photos/seed/phat-agentic-hero/1200/750",
-    alt: "Governed agentic engineering system control plane",
-  },
-};
-
 export function SelectedWork({ workItems, showIntro = true }: SelectedWorkProps) {
   return (
     <section className="section section--work" aria-labelledby={showIntro ? "selected-work-title" : undefined}>
@@ -48,17 +32,26 @@ export function SelectedWork({ workItems, showIntro = true }: SelectedWorkProps)
         ) : null}
 
         <ol className="work-showcase">
-          {workItems.map((work, index) => (
-            <li className="work-showcase__item" key={work.slug}>
-              <article className="work-showcase__article">
-                <div className="work-showcase__media">
-                  <MediaSurface
-                    variant="work"
-                    slot={`work-${work.slug}`}
-                    asset={placeholderWorkAssets[work.slug] ?? null}
-                    className={index % 2 === 1 ? "placeholder-visual--alternate" : undefined}
-                  />
-                </div>
+          {workItems.map((work, index) => {
+            const isKnowledge = work.slug.includes("ielts");
+            const isAgentic = work.slug.includes("agentic");
+            const modifierClass = isKnowledge
+              ? "work-showcase__article--knowledge"
+              : isAgentic
+              ? "work-showcase__article--agentic"
+              : index % 2 === 1
+              ? "work-showcase__article--inverted"
+              : "";
+
+            return (
+              <li className="work-showcase__item" key={work.slug}>
+                <article className={`work-showcase__article ${modifierClass}`.trim()}>
+                  <div className="work-showcase__media">
+                    <MediaSurface
+                      variant={isKnowledge ? "knowledge" : isAgentic ? "agentic" : "work"}
+                      slot={`work-${work.slug}`}
+                    />
+                  </div>
 
                 <div className="work-showcase__content">
                   <div className="work-showcase__meta">
@@ -79,7 +72,8 @@ export function SelectedWork({ workItems, showIntro = true }: SelectedWorkProps)
                 </div>
               </article>
             </li>
-          ))}
+          );
+        })}
         </ol>
       </div>
     </section>

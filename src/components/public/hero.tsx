@@ -12,6 +12,11 @@ type HeroProps = {
 export function Hero({ identity }: HeroProps) {
   return (
     <section className="hero-shell" aria-labelledby="hero-title">
+      <div className="hero-shell__watermark" aria-hidden="true">
+        <span>SYS_CORE // 21.02.40N</span>
+        <span className="hero-shell__watermark-sub">01 // ARCHITECTURAL EVIDENCE SURFACE</span>
+      </div>
+
       <div className="site-container hero">
         <div className="hero__copy">
           <p className="eyebrow hero__eyebrow">{identity.role}</p>
@@ -37,16 +42,8 @@ export function Hero({ identity }: HeroProps) {
         </div>
 
         <div className="hero__media">
-          <MediaSurface
-            variant="hero"
-            slot="home-hero"
-            asset={{
-              type: "image",
-              src: "https://picsum.photos/seed/phat-home-hero/1200/1140",
-              alt: "Architectural technical perspective illustrating system design focus",
-              priority: true,
-            }}
-          />
+          <div className="hero__media-backdrop" aria-hidden="true" />
+          <MediaSurface variant="hero" slot="home-hero" />
         </div>
       </div>
     </section>

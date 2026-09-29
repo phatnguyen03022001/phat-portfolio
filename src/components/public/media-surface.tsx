@@ -17,9 +17,19 @@ export type MediaAsset =
       fit?: "cover" | "contain";
     };
 
+export type MediaSurfaceVariant =
+  | "hero"
+  | "work"
+  | "detail"
+  | "wide"
+  | "knowledge"
+  | "agentic"
+  | "identity"
+  | "architecture";
+
 export type MediaSurfaceProps = {
   slot: string;
-  variant?: "hero" | "work" | "detail" | "wide";
+  variant?: MediaSurfaceVariant;
   asset?: MediaAsset | null;
   caption?: string;
   isEvidence?: boolean;
@@ -77,7 +87,7 @@ export function MediaSurface({
           </>
         ) : (
           <PlaceholderVisual
-            variant={variant === "wide" ? "work" : variant}
+            variant={variant}
             slot={slot}
             className="media-frame__placeholder"
           />
