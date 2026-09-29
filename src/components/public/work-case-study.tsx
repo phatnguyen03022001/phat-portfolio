@@ -33,6 +33,40 @@ const sectionEyebrows: Record<CaseStudySectionKind, string> = {
   KNOWN_LIMITATIONS: "Known Limitations & Boundaries",
 };
 
+const placeholderDossierHeroAssets: Record<
+  string,
+  { type: "image"; src: string; alt: string; priority?: boolean }
+> = {
+  "knowledge-first-ielts-learning-system": {
+    type: "image",
+    src: "https://picsum.photos/seed/phat-ielts-hero/1200/750",
+    alt: "IELTS learning system domain engineering overview",
+    priority: true,
+  },
+  "governed-agentic-engineering-system": {
+    type: "image",
+    src: "https://picsum.photos/seed/phat-agentic-hero/1200/750",
+    alt: "Governed agentic engineering system overview",
+    priority: true,
+  },
+};
+
+const placeholderArchAssets: Record<
+  string,
+  { type: "image"; src: string; alt: string }
+> = {
+  "knowledge-first-ielts-learning-system": {
+    type: "image",
+    src: "https://picsum.photos/seed/phat-arch-ielts/1280/720",
+    alt: "Knowledge pipeline architecture boundary representation",
+  },
+  "governed-agentic-engineering-system": {
+    type: "image",
+    src: "https://picsum.photos/seed/phat-arch-agentic/1280/720",
+    alt: "Governed agentic control plane architecture boundary representation",
+  },
+};
+
 export function WorkCaseStudy({ work }: WorkCaseStudyProps) {
   const sections = orderCaseStudySections(work.sections);
 
@@ -70,7 +104,11 @@ export function WorkCaseStudy({ work }: WorkCaseStudyProps) {
         </div>
 
         <div className="case-hero__media">
-          <MediaSurface variant="detail" slot={`case-study-${work.slug}`} />
+          <MediaSurface
+            variant="detail"
+            slot={`case-study-${work.slug}`}
+            asset={placeholderDossierHeroAssets[work.slug] ?? null}
+          />
         </div>
       </header>
 
@@ -239,6 +277,7 @@ export function WorkCaseStudy({ work }: WorkCaseStudyProps) {
                       <MediaSurface
                         variant="wide"
                         slot={`arch-${work.slug}`}
+                        asset={placeholderArchAssets[work.slug] ?? null}
                         isEvidence={false}
                         caption="Architectural boundary structure"
                       />

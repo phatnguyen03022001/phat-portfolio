@@ -23,7 +23,15 @@ export default async function AboutPage() {
           <p className="hero__specialization">{profile.identity.specialization}</p>
           <p className="lede">{profile.home.aboutSummary}</p>
         </div>
-        <MediaSurface variant="detail" slot="about-identity" />
+        <MediaSurface
+          variant="detail"
+          slot="about-identity"
+          asset={{
+            type: "image",
+            src: "https://picsum.photos/seed/phat-about/1000/833",
+            alt: "Engineering workspace and calibration perspective",
+          }}
+        />
       </section>
 
       <EngineeringApproach principles={profile.engineeringPrinciples} />

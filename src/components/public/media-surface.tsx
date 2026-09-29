@@ -46,29 +46,35 @@ export function MediaSurface({
     >
       <div className="media-frame__viewport">
         {asset?.type === "image" ? (
-          <Image
-            src={asset.src}
-            alt={asset.alt}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            priority={asset.priority}
-            loading={asset.priority ? "eager" : "lazy"}
-            className={`media-asset media-asset--${asset.fit ?? "cover"}`}
-          />
+          <>
+            <Image
+              src={asset.src}
+              alt={asset.alt}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority={asset.priority}
+              loading={asset.priority ? "eager" : "lazy"}
+              className={`media-asset media-asset--${asset.fit ?? "cover"}`}
+            />
+            <div className="media-frame__overlay" aria-hidden="true" />
+          </>
         ) : asset?.type === "video" ? (
-          <video
-            src={asset.src}
-            poster={asset.poster}
-            aria-label={asset.ariaLabel ?? caption ?? "Video content"}
-            autoPlay
-            playsInline
-            loop
-            muted
-            preload="metadata"
-            className={`media-asset media-asset--${asset.fit ?? "cover"}`}
-          >
-            Your browser does not support the video tag.
-          </video>
+          <>
+            <video
+              src={asset.src}
+              poster={asset.poster}
+              aria-label={asset.ariaLabel ?? caption ?? "Video content"}
+              autoPlay
+              playsInline
+              loop
+              muted
+              preload="metadata"
+              className={`media-asset media-asset--${asset.fit ?? "cover"}`}
+            >
+              Your browser does not support the video tag.
+            </video>
+            <div className="media-frame__overlay" aria-hidden="true" />
+          </>
         ) : (
           <PlaceholderVisual
             variant={variant === "wide" ? "work" : variant}

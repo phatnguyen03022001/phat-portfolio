@@ -743,10 +743,30 @@ main {
   height: 100%;
   object-fit: cover;
   z-index: 2;
+  filter: saturate(0.55) brightness(0.85) contrast(1.1);
+  transition: filter 0.35s ease, transform 0.4s ease;
+}
+
+.media-frame:hover .media-asset {
+  filter: saturate(0.75) brightness(0.92) contrast(1.1);
+  transform: scale(1.02);
 }
 
 .media-asset--contain {
   object-fit: contain;
+}
+
+.media-frame__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--background) 15%, transparent) 0%,
+    color-mix(in oklch, var(--background) 45%, transparent) 65%,
+    color-mix(in oklch, var(--background) 75%, transparent) 100%
+  );
+  z-index: 3;
 }
 
 .media-frame__placeholder {
@@ -1733,5 +1753,9 @@ main {
   .placeholder-visual__node--b,
   .placeholder-visual__node--c {
     animation: none !important;
+  }
+
+  .media-frame:hover .media-asset {
+    transform: none !important;
   }
 }

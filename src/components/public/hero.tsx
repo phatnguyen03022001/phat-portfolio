@@ -37,7 +37,16 @@ export function Hero({ identity }: HeroProps) {
         </div>
 
         <div className="hero__media">
-          <MediaSurface variant="hero" slot="home-hero" />
+          <MediaSurface
+            variant="hero"
+            slot="home-hero"
+            asset={{
+              type: "image",
+              src: "https://picsum.photos/seed/phat-home-hero/1200/1140",
+              alt: "Architectural technical perspective illustrating system design focus",
+              priority: true,
+            }}
+          />
         </div>
       </div>
     </section>
