@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import type { SiteProfile } from "@/content/model";
 
-import { PlaceholderVisual } from "./placeholder-visual";
+import { MediaSurface } from "./media-surface";
 
 type HeroProps = {
   identity: SiteProfile["identity"];
@@ -37,7 +37,7 @@ export function Hero({ identity }: HeroProps) {
         </div>
 
         <div className="hero__media">
-          <PlaceholderVisual variant="hero" slot="home-hero" />
+          <MediaSurface variant="hero" slot="home-hero" />
         </div>
       </div>
     </section>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { EngineeringApproach } from "@/components/public/engineering-approach";
-import { PlaceholderVisual } from "@/components/public/placeholder-visual";
+import { MediaSurface } from "@/components/public/media-surface";
 import { getSiteProfile } from "@/content/queries";
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export default async function AboutPage() {
           <p className="hero__specialization">{profile.identity.specialization}</p>
           <p className="lede">{profile.home.aboutSummary}</p>
         </div>
-        <PlaceholderVisual variant="detail" slot="about-identity" />
+        <MediaSurface variant="detail" slot="about-identity" />
       </section>
 
       <EngineeringApproach principles={profile.engineeringPrinciples} />

@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import type { WorkCategory, WorkItem } from "../../content/model";
-import { PlaceholderVisual } from "./placeholder-visual";
+import { MediaSurface } from "./media-surface";
 
 type SelectedWorkProps = {
   workItems: WorkItem[];
@@ -36,7 +36,7 @@ export function SelectedWork({ workItems, showIntro = true }: SelectedWorkProps)
             <li className="work-showcase__item" key={work.slug}>
               <article className="work-showcase__article">
                 <div className="work-showcase__media">
-                  <PlaceholderVisual
+                  <MediaSurface
                     variant="work"
                     slot={`work-${work.slug}`}
                     className={index % 2 === 1 ? "placeholder-visual--alternate" : undefined}
